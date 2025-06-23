@@ -1,0 +1,61 @@
+.loading, .section-loading, .footer-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-size: 1.2rem;
+  color: #2563eb;
+  background-color: rgba(240, 249, 255, 0.5);
+  border-radius: 8px;
+  margin: 20px 0;
+  min-height: 100px;
+}
+
+.section-loading {
+  min-height: 200px;
+}
+
+/* Loading animation */
+.loading::after, .section-loading::after, .footer-loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid #2563eb;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* For content that appears above the fold */
+.critical-content {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* For content that appears below the fold */
+.non-critical-content {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 1000px;
+}
+
+/* Improve rendering performance */
+img, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Optimize render blocking */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

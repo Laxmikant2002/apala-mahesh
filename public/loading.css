@@ -1,0 +1,39 @@
+/* Styles for initial page load - should be minimal to load quickly */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root:empty {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #f0fdfa, #e0f2fe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root:empty::after {
+  content: "";
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid #2563eb;
+  border-top-color: transparent;
+  animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
+/* Skip animation if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  #root:empty::after {
+    animation: none;
+    border: 5px solid rgba(37, 99, 235, 0.5);
+  }
+}

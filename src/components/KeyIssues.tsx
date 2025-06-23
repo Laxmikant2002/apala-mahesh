@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import '../styles/KeyIssues.css'; // Main styling
 import '../styles/button-fixes.css'; // Additional button fixes for links
+import LazyImage from './LazyImage';
 
 interface KeyIssue {
   id: number;
@@ -130,9 +131,8 @@ const KeyIssues: React.FC = () => {
             transition={{ duration: 0.6, delay: idx * 0.1 }}
           >
             <Link to={`/issues/${issue.issueId}`} className="issue-card-link">
-              <div className="issue-card">
-                <div className="issue-card-image">
-                  <img src={issue.imageUrl} alt={issue.title} />
+              <div className="issue-card">                <div className="issue-card-image">
+                  <LazyImage src={issue.imageUrl} alt={issue.title} width={400} height={300} />
                   <div className="issue-overlay">
                     <h3>{issue.title}</h3>
                     <p>{issue.shortDescription}</p>

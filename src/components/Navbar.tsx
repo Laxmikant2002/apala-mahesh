@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import '../styles/Navbar.css';
-import TopBar from './TopBar';
+// Lazy load TopBar component
+const TopBar = lazy(() => import('./TopBar'));
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
@@ -103,10 +104,11 @@ const Navbar: React.FC = () => {
     { id: 'join', text: t('navbar.joinMovement'), className: 'btn-join' },
     { id: 'contact', text: t('navbar.contactUs') }
   ];
-
   return (
     <header>
-      <TopBar />
+      <Suspense fallback={<div style={{ height: '40px' }}></div>}>
+        <TopBar />
+      </Suspense>
       <motion.nav
         className={`navbar ${isScrolled ? 'scrolled' : ''}`}
         initial={{ y: -100 }}
@@ -118,14 +120,21 @@ const Navbar: React.FC = () => {
           duration: 0.3,
           ease: "easeInOut"
         }}
-      >
-        <motion.div
+      >        {/* Only render progress bar after initial load */}
+        <div
           className="scroll-progress"
           style={{
-            scaleX: scrollYProgress,
             transformOrigin: "left"
           }}
-        />
+        >
+          <div
+            style={{
+              transform: `scaleX(${scrollYProgress.get()})`,
+              transformOrigin: "left"
+            }}
+            className="scroll-progress-inner"
+          />
+        </div>
         <motion.a
           href="/"
           className="logo"
@@ -133,22 +142,12 @@ const Navbar: React.FC = () => {
           whileTap={{ scale: 0.95 }}
         >
           Brand
-        </motion.a>
-        <motion.ul
+        </motion.a>        <ul
           className={`nav-links ${isMenuActive ? 'active' : ''}`}
-          initial={{ opacity: 1, x: 0 }}
-          animate={{ 
-            opacity: 1,
-            x: 0,
-            display: 'flex'
-          }}
-        >
-          {navItems.map(({ id, text, className }) => (
-            <motion.li
+        >          {navItems.map(({ id, text, className }) => (
+            <li
               key={id}
               className={activeSection === id ? 'active' : ''}
-              whileHover={{ y: -2 }}
-              whileTap={{ y: 0 }}
             >
               <a
                 href={`#${id}`}
@@ -157,9 +156,9 @@ const Navbar: React.FC = () => {
               >
                 {text}
               </a>
-            </motion.li>
+            </li>
           ))}
-        </motion.ul>
+        </ul>
         <motion.button
           className="menu-toggle"
           aria-label="Toggle menu"
