@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 import TopBar from './TopBar';
 
@@ -43,10 +44,8 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {      // Handle scrolled state for navbar background
       const scrollThreshold = 70; // Height to trigger solid background
-      setIsScrolled(window.scrollY > scrollThreshold);
-      
-      // Handle active section highlighting
-      const sections = ['hero', 'key-issue', 'media', 'join', 'infocus'];
+      setIsScrolled(window.scrollY > scrollThreshold);      // Handle active section highlighting
+      const sections = ['hero', 'key-issues', 'media', 'join', 'contact'];
       const scrollPosition = window.scrollY + 100; // Offset to trigger a bit earlier
       
       for (const sectionId of sections) {
@@ -73,13 +72,11 @@ const Navbar: React.FC = () => {
     <header>
       <TopBar />
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-        <a href="/" className="logo">Brand</a>
-        <ul className={`nav-links ${isMenuActive ? 'active' : ''}`}>
+        <a href="/" className="logo">Brand</a>        <ul className={`nav-links ${isMenuActive ? 'active' : ''}`}>
           <li className={activeSection === 'hero' ? 'active' : ''}>
             <a href="#hero" onClick={handleNavClick}>Home</a>
-          </li>
-          <li className={activeSection === 'key-issue' ? 'active' : ''}>
-            <a href="#key-issue" onClick={handleNavClick}>Key Issue</a>
+          </li>          <li className={activeSection === 'key-issues' ? 'active' : ''}>
+            <a href="#key-issues" onClick={handleNavClick}>Key Issues</a>
           </li>
           <li className={`dropdown ${activeSection === 'media' ? 'active' : ''}`}>
             <a href="#media" aria-haspopup="true" onClick={handleNavClick}>Media</a>
@@ -88,13 +85,16 @@ const Navbar: React.FC = () => {
               <li><a href="#photos" onClick={handleNavClick}>Photos</a></li>
               <li><a href="#articles" onClick={handleNavClick}>Articles</a></li>
             </ul>
-          </li>          <li className={activeSection === 'join' ? 'active' : ''}>
+          </li>          
+          <li className={activeSection === 'join' ? 'active' : ''}>
             <a href="#join" className="btn-join" onClick={handleNavClick}>Join Movement</a>
+          </li>          <li>
+            <Link to="/raise-issue">Raise Issue</Link>
           </li>
-          <li className={activeSection === 'infocus' ? 'active' : ''}>
-            <a href="#infocus" onClick={handleNavClick}>Infocus</a>
+          <li className={activeSection === 'contact' ? 'active' : ''}>
+            <a href="#contact" onClick={handleNavClick}>Contact Us</a>
           </li>
-        </ul>        <button className="menu-toggle" aria-label="Toggle menu" onClick={toggleMenu}>
+        </ul><button className="menu-toggle" aria-label="Toggle menu" onClick={toggleMenu}>
           ☰
         </button>
       </nav>

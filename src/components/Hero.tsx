@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Hero.css';
 
 const Hero: React.FC = () => {
@@ -9,7 +10,7 @@ const Hero: React.FC = () => {
         <p className="hero-subtitle">Join us in making a difference for a better tomorrow</p>
         <div className="hero-cta">
           <a href="#join" className="cta-primary">Join Now</a>
-          <a href="#key-issue" className="cta-secondary">Learn More</a>
+          <Link to="/raise-issue" className="cta-secondary">Raise Issue</Link>
         </div>
       </div>
       <div className="overlay"></div>
