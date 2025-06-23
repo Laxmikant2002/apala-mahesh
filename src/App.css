@@ -1,38 +1,48 @@
 .App {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Content sections */
+.content {
+  padding-top: 60px; /* Add space for fixed navbar and top bar */
+}
+.content section {
+  padding: 20px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+section {
+  scroll-margin-top: 100px; /* Accounts for navbar height and top bar */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Style each section differently */
+#key-issue {
+  background-color: #f5f5f5;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#media {
+  background-color: #e0e0e0;
 }
 
-.App-link {
-  color: #61dafb;
+#join {
+  background-color: #f0fff0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#infocus {
+  background-color: #f0f8ff;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* Smooth scrolling for the whole page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Make sure the navbar is on top of everything */
+header {
+  z-index: 1000;
 }
