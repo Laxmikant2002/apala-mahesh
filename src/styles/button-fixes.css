@@ -1,0 +1,23 @@
+/* Additional button styling to make learn-more-button look like a link */
+.learn-more-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  outline: none;
+}
+
+.learn-more-button:focus {
+  text-decoration: underline;
+}
+
+/* Fix for any nested button clicks */
+.issue-card-link .issue-card-footer button {
+  cursor: pointer;
+  pointer-events: auto;
+}

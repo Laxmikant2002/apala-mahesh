@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './IssueDetail.css'; // We can reuse the same CSS
+import '../styles/IssueDetail.css'; // We can reuse the same CSS
 
 const RaiseIssue: React.FC = () => {
   // State for form fields

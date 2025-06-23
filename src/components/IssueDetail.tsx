@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import './IssueDetail.css';
+import '../styles/IssueDetail.css'; // Assuming you have a CSS file for styling
 
 // Interface for issue data
 interface IssueDetailData {

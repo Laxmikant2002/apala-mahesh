@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import './KeyIssues.css';
+import '../styles/KeyIssues.css'; // Main styling
+import '../styles/button-fixes.css'; // Additional button fixes for links
 
 interface KeyIssue {
   id: number;
@@ -136,21 +137,18 @@ const KeyIssues: React.FC = () => {
                     <h3>{issue.title}</h3>
                     <p>{issue.shortDescription}</p>
                   </div>
-                </div>            
-                <div className="issue-card-footer">
+                </div>                <div className="issue-card-footer">
                   <p>{issue.fullDescription}</p>
                   <div className="issue-card-actions">
-                    <a 
-                      href={issue.learnMoreUrl} 
-                      className="learn-more" 
+                    <button 
+                      className="learn-more-button" 
                       onClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
                         window.open(issue.learnMoreUrl, '_blank');
                       }}
-                    >
-                      Learn More <span className="arrow">&#8594;</span>
-                    </a>
+                    >                      Learn More <span className="arrow">&#8594;</span>
+                    </button>
                     <button 
                       className="raise-issue" 
                       onClick={(e) => {

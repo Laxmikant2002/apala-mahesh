@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import './Navbar.css';
+import '../styles/Navbar.css';
 import TopBar from './TopBar';
 
 const Navbar: React.FC = () => {

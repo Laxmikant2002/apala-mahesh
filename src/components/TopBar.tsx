@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import './TopBar.css';
+import '../styles/TopBar.css'; // Assuming you have a CSS file for styling
 
 interface Language {
   code: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import './Hero.css';
+import '../styles/Hero.css'; // Assuming you have a CSS file for styling
 
 const Hero: React.FC = () => {
   const { t } = useTranslation();

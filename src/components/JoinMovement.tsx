@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import './JoinMovement.css';
+import '../styles/JoinMovement.css'; // Ensure you have the appropriate CSS file
 
 const JoinMovement: React.FC = () => {
   return (

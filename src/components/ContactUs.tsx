@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import './ContactUs.css';
+import '../styles/ContactUs.css';
 
 const ContactUs: React.FC = () => {
   const [formData, setFormData] = useState({

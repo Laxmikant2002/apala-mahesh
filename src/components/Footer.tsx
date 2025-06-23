@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import './Footer.css';
+import '../styles/Footer.css';
 
 const Footer: React.FC = () => {
   const [email, setEmail] = useState('');

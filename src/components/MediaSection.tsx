@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import './MediaSection.css';
+import '../styles/MediaSection.css'; // Ensure you have the correct path to your CSS file
 
 const MediaSection: React.FC = () => {
   return (
