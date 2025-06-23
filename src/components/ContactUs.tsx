@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import './ContactUs.css';
 
 const ContactUs: React.FC = () => {
@@ -69,42 +70,68 @@ const ContactUs: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="contact-section">
-      <h2 className="section-title">Contact Us</h2>
-      
+    <motion.section
+      id="contact"
+      className="contact-section"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.7 }}
+    >
+      <motion.h2
+        className="section-title"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.7, delay: 0.1 }}
+      >
+        Contact Us
+      </motion.h2>
       <div className="contact-container">
-        <div className="contact-info">
-          <div className="contact-card">
-            <div className="contact-icon">
-              <i className="fas fa-map-marker-alt"></i>
-            </div>
-            <div className="contact-details">
-              <h3>Our Address</h3>
-              <p>Savitribai Phule Pune University,<br />Ganeshkhind, Pune,<br />Maharashtra 411007</p>
-            </div>
-          </div>
-          
-          <div className="contact-card">
-            <div className="contact-icon">
-              <i className="fas fa-envelope"></i>
-            </div>
-            <div className="contact-details">
-              <h3>Email Us</h3>
-              <p>info@studentmovement.org<br />support@studentmovement.org</p>
-            </div>
-          </div>
-          
-          <div className="contact-card">
-            <div className="contact-icon">
-              <i className="fas fa-phone-alt"></i>
-            </div>
-            <div className="contact-details">
-              <h3>Call Us</h3>
-              <p>+91 20 2560 1000<br />+91 20 2569 4116</p>
-            </div>
-          </div>
-          
-          <div className="social-links">
+        <motion.div
+          className="contact-info"
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+        >
+          {[{
+            icon: 'fas fa-map-marker-alt',
+            title: 'Our Address',
+            text: (<p>Savitribai Phule Pune University,<br />Ganeshkhind, Pune,<br />Maharashtra 411007</p>)
+          }, {
+            icon: 'fas fa-envelope',
+            title: 'Email Us',
+            text: (<p>info@studentmovement.org<br />support@studentmovement.org</p>)
+          }, {
+            icon: 'fas fa-phone-alt',
+            title: 'Call Us',
+            text: (<p>+91 20 2560 1000<br />+91 20 2569 4116</p>)
+          }].map((card, idx) => (
+            <motion.div
+              className="contact-card"
+              key={card.title}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+            >
+              <div className="contact-icon">
+                <i className={card.icon}></i>
+              </div>
+              <div className="contact-details">
+                <h3>{card.title}</h3>
+                {card.text}
+              </div>
+            </motion.div>
+          ))}
+          <motion.div
+            className="social-links"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <h3>Connect With Us</h3>
             <div className="social-icons">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
@@ -120,18 +147,21 @@ const ContactUs: React.FC = () => {
                 <i className="fab fa-linkedin-in"></i>
               </a>
             </div>
-          </div>
-        </div>
-        
-        <div className="contact-form-container">
+          </motion.div>
+        </motion.div>
+        <motion.div
+          className="contact-form-container"
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.18 }}
+        >
           <h3>Send us a message</h3>
-          
           {submitStatus.submitted && (
             <div className={`form-message ${submitStatus.success ? 'success' : 'error'}`}>
               {submitStatus.message}
             </div>
           )}
-          
           <form className="contact-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="name">Your Name *</label>
@@ -144,7 +174,6 @@ const ContactUs: React.FC = () => {
                 required
               />
             </div>
-            
             <div className="form-group">
               <label htmlFor="email">Your Email *</label>
               <input
@@ -156,7 +185,6 @@ const ContactUs: React.FC = () => {
                 required
               />
             </div>
-            
             <div className="form-group">
               <label htmlFor="subject">Subject</label>
               <select
@@ -173,7 +201,6 @@ const ContactUs: React.FC = () => {
                 <option value="partnership">Partnership Proposal</option>
               </select>
             </div>
-            
             <div className="form-group">
               <label htmlFor="message">Your Message *</label>
               <textarea
@@ -185,12 +212,11 @@ const ContactUs: React.FC = () => {
                 required
               ></textarea>
             </div>
-            
             <button type="submit" className="submit-button">Send Message</button>
           </form>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -1,99 +1,128 @@
 .join-movement-section {
-  background-color: #f9f9f9;
-  padding: 80px 20px 40px;
+  background: linear-gradient(120deg, #f0fdfa 0%, #e0f2fe 100%);
+  padding: 70px 0 60px 0;
   width: 100%;
   box-sizing: border-box;
+  min-height: 100vh;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 .section-title {
-  color: #333333;
-  font-size: 28px;
-  font-weight: bold;
+  color: #2563eb;
+  font-size: 2.4rem;
+  font-weight: 800;
   margin-bottom: 10px;
   position: relative;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px #22c55e22;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 4px;
+  background: linear-gradient(90deg, #22c55e, #06b6d4);
+  border-radius: 2px;
 }
 
 .section-subtitle {
-  color: #3498db;
-  font-size: 18px;
+  color: #06b6d4;
+  font-size: 1.2rem;
   margin-bottom: 5px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .update-date {
-  color: #777;
-  font-size: 14px;
+  color: #22c55e;
+  font-size: 1rem;
   font-style: italic;
+  margin-top: 4px;
 }
 
 .section-content {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  max-width: 800px;
+  gap: 32px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 .info-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(255,255,255,0.85);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1.5px solid #e0f2fe;
+  transition: transform 0.25s, box-shadow 0.25s, border 0.2s;
 }
 
 .info-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 36px #22c55e33;
+  border: 1.5px solid #22c55e;
 }
 
 .info-card h3, .info-card h4 {
-  background-color: #3498db;
-  color: white;
-  padding: 15px 20px;
+  background: linear-gradient(90deg, #22c55e, #06b6d4);
+  color: #fff;
+  padding: 18px 24px;
   margin: 0;
-  font-size: 20px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 18px 18px 0 0;
 }
 
 .card-content {
-  padding: 20px;
+  padding: 24px 22px 20px 22px;
 }
 
 .card-image-container {
   margin-bottom: 15px;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 12px;
 }
 
 .card-image {
   width: 100%;
-  height: auto;
+  height: 220px;
+  object-fit: cover;
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s;
+  border-radius: 12px;
 }
 
 .card-image:hover {
-  transform: scale(1.05);
+  transform: scale(1.07);
 }
 
 .cta-button {
   display: inline-block;
-  background-color: #3498db;
-  color: white;
-  font-weight: bold;
+  background: linear-gradient(90deg, #22c55e, #06b6d4);
+  color: #fff;
+  font-weight: 700;
   text-decoration: none;
-  padding: 12px 24px;
-  border-radius: 5px;
-  margin-top: 15px;
-  transition: background-color 0.3s ease;
+  padding: 14px 32px;
+  border-radius: 8px;
+  margin-top: 18px;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px #22c55e33;
+  transition: background 0.2s, transform 0.18s;
+  border: none;
 }
 
 .cta-button:hover {
-  background-color: #2980b9;
+  background: linear-gradient(90deg, #06b6d4, #22c55e);
+  transform: scale(1.05);
 }
 
 .info-list, .benefit-list {
@@ -104,6 +133,7 @@
 .info-list li, .benefit-list li {
   margin-bottom: 10px;
   line-height: 1.5;
+  font-size: 1.08rem;
 }
 
 .benefit-list li {
@@ -113,18 +143,20 @@
 
 .benefit-list li::before {
   content: "✓";
-  color: #2ecc71;
+  color: #22c55e;
   position: absolute;
   left: -20px;
   font-weight: bold;
 }
 
 .note-box {
-  background-color: #f8f9fa;
-  border-left: 3px solid #3498db;
+  background: #e0f2fe;
+  border-left: 3px solid #22c55e;
   padding: 10px 15px;
   margin-top: 15px;
-  font-size: 14px;
+  font-size: 1rem;
+  color: #2563eb;
+  border-radius: 6px;
 }
 
 .process-item {
@@ -134,28 +166,33 @@
 }
 
 .process-icon {
-  background-color: #3498db;
-  color: white;
-  width: 30px;
-  height: 30px;
+  background: linear-gradient(90deg, #22c55e, #06b6d4);
+  color: #fff;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-weight: 700;
   margin-right: 15px;
   flex-shrink: 0;
+  font-size: 1.1rem;
 }
 
 .process-text {
   line-height: 1.5;
+  color: #2563eb;
+  font-weight: 500;
 }
 
 .schedule-box {
-  background-color: #e8f4fb;
+  background: #e0f2fe;
   padding: 15px;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-top: 15px;
+  color: #2563eb;
+  font-weight: 500;
 }
 
 .tips-container {
@@ -167,45 +204,50 @@
 .tip-item {
   display: flex;
   align-items: center;
-  background-color: #f8f9fa;
+  background: #f0fdfa;
   padding: 10px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .tip-icon {
-  font-size: 20px;
+  font-size: 1.3rem;
   margin-right: 10px;
 }
 
 .tip-text {
-  font-size: 14px;
+  font-size: 1rem;
+  color: #2563eb;
 }
 
 .reference-text {
   font-style: italic;
-  color: #555;
+  color: #06b6d4;
   margin-bottom: 15px;
+  font-size: 1.05rem;
 }
 
 .link-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .cta-link {
   display: inline-block;
-  background-color: #3498db;
-  color: white;
+  background: linear-gradient(90deg, #22c55e, #06b6d4);
+  color: #fff;
   text-decoration: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  border-radius: 7px;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.18s;
+  box-shadow: 0 2px 12px #22c55e33;
 }
 
 .cta-link:hover {
-  background-color: #2980b9;
+  background: linear-gradient(90deg, #06b6d4, #22c55e);
+  transform: scale(1.05);
 }
 
 .join-form {
@@ -219,17 +261,26 @@
 .form-group label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold;
-  color: #555;
+  font-weight: 700;
+  color: #2563eb;
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
+  padding: 12px;
+  border: 1.5px solid #e0f2fe;
+  border-radius: 7px;
+  font-size: 1rem;
+  background: #f0fdfa;
+  color: #2563eb;
+  transition: border 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border: 1.5px solid #22c55e;
 }
 
 .form-group textarea {
@@ -237,48 +288,64 @@
 }
 
 .form-submit {
-  background-color: #3498db;
-  color: white;
+  background: linear-gradient(90deg, #22c55e, #06b6d4);
+  color: #fff;
   border: none;
-  padding: 12px 24px;
-  border-radius: 5px;
-  font-weight: bold;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px #22c55e33;
+  transition: background 0.2s, transform 0.18s;
 }
 
 .form-submit:hover {
-  background-color: #2980b9;
+  background: linear-gradient(90deg, #06b6d4, #22c55e);
+  transform: scale(1.05);
 }
 
 /* Responsive styles */
+@media (max-width: 900px) {
+  .section-content {
+    max-width: 98vw;
+    padding: 0 8px;
+  }
+}
 @media (max-width: 768px) {
   .join-movement-section {
-    padding: 60px 15px 30px;
+    padding: 40px 0 30px 0;
   }
-  
   .section-title {
-    font-size: 24px;
+    font-size: 1.7rem;
+    margin-bottom: 28px;
   }
-  
-  .tips-container {
-    grid-template-columns: 1fr;
+  .section-header {
+    margin-bottom: 28px;
   }
-  
-  .link-container {
-    flex-direction: column;
+  .section-content {
+    gap: 18px;
+    padding: 0 4px;
   }
-  
-  .cta-link, .cta-button {
-    text-align: center;
+  .info-card h3, .info-card h4 {
+    font-size: 1.05rem;
+    padding: 12px 10px;
   }
-  
-  .process-item {
-    flex-direction: column;
-    align-items: flex-start;
+  .card-content {
+    padding: 12px 6px 10px 6px;
   }
-  
-  .process-icon {
-    margin-bottom: 10px;
+}
+@media (max-width: 480px) {
+  .join-movement-section {
+    padding: 24px 0 10px 0;
+  }
+  .section-title {
+    font-size: 1.1rem;
+  }
+  .info-card {
+    border-radius: 10px;
+  }
+  .info-card h3, .info-card h4 {
+    border-radius: 10px 10px 0 0;
   }
 }

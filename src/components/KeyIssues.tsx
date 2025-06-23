@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './KeyIssues.css';
 
 interface KeyIssue {
@@ -92,8 +93,21 @@ const KeyIssues: React.FC = () => {
     console.log("Previous slide clicked");
   };
   return (
-    <section className="key-issues-section" id="key-issues">
-      <div className="key-issues-header">
+    <motion.section 
+      className="key-issues-section" 
+      id="key-issues"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.7 }}
+    >
+      <motion.div 
+        className="key-issues-header"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.7, delay: 0.1 }}
+      >
         <h2>KEY ISSUES</h2>
         <div className="key-issues-navigation">
           <button className="nav-arrow prev" onClick={prevSlide} aria-label="Previous issue">
@@ -103,9 +117,17 @@ const KeyIssues: React.FC = () => {
             &#8594;
           </button>
         </div>
-      </div>      <div className="key-issues-container">
-        {keyIssues.map((issue) => (
-          <div className="issue-card-wrapper" key={issue.id}>
+      </motion.div>
+      <div className="key-issues-container">
+        {keyIssues.map((issue, idx) => (
+          <motion.div 
+            className="issue-card-wrapper" 
+            key={issue.id}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: idx * 0.1 }}
+          >
             <Link to={`/issues/${issue.issueId}`} className="issue-card-link">
               <div className="issue-card">
                 <div className="issue-card-image">
@@ -132,9 +154,7 @@ const KeyIssues: React.FC = () => {
                     <button 
                       className="raise-issue" 
                       onClick={(e) => {
-                        // This is redundant since the parent Link will handle navigation
-                        // But it's here to make it clear this is clickable
-                        e.stopPropagation(); // Don't trigger parent Link click
+                        e.stopPropagation();
                         window.location.href = `/issues/${issue.issueId}`;
                       }}
                     >
@@ -144,10 +164,9 @@ const KeyIssues: React.FC = () => {
                 </div>
               </div>
             </Link>
-          </div>
+          </motion.div>
         ))}
       </div>
-      
       <div className="view-more-container">
         <button 
           className="view-more-button" 
@@ -157,7 +176,7 @@ const KeyIssues: React.FC = () => {
           {showMore ? 'View Less' : 'View More'}
         </button>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

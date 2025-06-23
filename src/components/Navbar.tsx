@@ -1,27 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import './Navbar.css';
 import TopBar from './TopBar';
 
 const Navbar: React.FC = () => {
   const [isMenuActive, setIsMenuActive] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero'); // Set 'hero' as initially active
+  const [activeSection, setActiveSection] = useState('hero');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const { scrollY, scrollYProgress } = useScroll();
 
   const toggleMenu = () => {
     setIsMenuActive(!isMenuActive);
   };
 
+  // Debounced scroll handler for better performance
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY;
+    const scrollThreshold = 100;
+    const scrollDelta = 10; // Minimum scroll amount to trigger hide/show
+
+    // Update scroll state
+    setIsScrolled(currentScrollY > scrollThreshold);
+
+    // Show/hide navbar based on scroll direction
+    if (currentScrollY < lastScrollY) {
+      // Scrolling up
+      setIsVisible(true);
+    } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+      // Scrolling down and past threshold
+      if (currentScrollY - lastScrollY > scrollDelta) {
+        setIsVisible(false);
+      }
+    }
+
+    setLastScrollY(currentScrollY);
+  }, [lastScrollY]);
+
+  // Track scroll position for progress indicator
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    handleScroll();
+  });
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Close the menu when a link is clicked on mobile
     if (isMenuActive) {
       setIsMenuActive(false);
     }
 
-    // Get the href attribute
     const href = e.currentTarget.getAttribute('href');
     
-    // Only apply smooth scroll for anchor links
     if (href && href.startsWith('#')) {
       e.preventDefault();
       const targetId = href.substring(1);
@@ -29,32 +57,29 @@ const Navbar: React.FC = () => {
       
       if (targetElement) {
         targetElement.scrollIntoView({
-          behavior: 'smooth'
+          behavior: 'smooth',
+          block: 'start'
         });
         
-        // Update URL without page reload
         window.history.pushState(null, '', href);
-        
-        // Set active section
         setActiveSection(targetId);
       }
     }
   };
-  // Add scroll event listener to highlight the current section and handle navbar transparency
+
   useEffect(() => {
-    const handleScroll = () => {      // Handle scrolled state for navbar background
-      const scrollThreshold = 70; // Height to trigger solid background
-      setIsScrolled(window.scrollY > scrollThreshold);      // Handle active section highlighting
+    const handleSectionHighlight = () => {
       const sections = ['hero', 'key-issues', 'media', 'join', 'contact'];
-      const scrollPosition = window.scrollY + 100; // Offset to trigger a bit earlier
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
       
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
         if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetBottom = offsetTop + element.offsetHeight;
+          const { top, bottom } = element.getBoundingClientRect();
+          const elementTop = top + window.scrollY;
+          const elementBottom = bottom + window.scrollY;
           
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+          if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
             setActiveSection(sectionId);
             break;
           }
@@ -62,42 +87,88 @@ const Navbar: React.FC = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    window.addEventListener('scroll', handleSectionHighlight);
+    handleSectionHighlight();
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleSectionHighlight);
     };
-  }, []);  return (
+  }, []);
+
+  const navItems = [
+    { id: 'hero', text: 'Home' },
+    { id: 'key-issues', text: 'Key Issues' },
+    { id: 'media', text: 'Media' },
+    { id: 'join', text: 'Join Movement', className: 'btn-join' },
+    { id: 'contact', text: 'Contact Us' }
+  ];
+
+  return (
     <header>
       <TopBar />
-      <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-        <a href="/" className="logo">Brand</a>        <ul className={`nav-links ${isMenuActive ? 'active' : ''}`}>
-          <li className={activeSection === 'hero' ? 'active' : ''}>
-            <a href="#hero" onClick={handleNavClick}>Home</a>
-          </li>          <li className={activeSection === 'key-issues' ? 'active' : ''}>
-            <a href="#key-issues" onClick={handleNavClick}>Key Issues</a>
-          </li>
-          <li className={`dropdown ${activeSection === 'media' ? 'active' : ''}`}>
-            <a href="#media" aria-haspopup="true" onClick={handleNavClick}>Media</a>
-            <ul className="dropdown-menu">
-              <li><a href="#videos" onClick={handleNavClick}>Videos</a></li>
-              <li><a href="#photos" onClick={handleNavClick}>Photos</a></li>
-              <li><a href="#articles" onClick={handleNavClick}>Articles</a></li>
-            </ul>
-          </li>          
-          <li className={activeSection === 'join' ? 'active' : ''}>
-            <a href="#join" className="btn-join" onClick={handleNavClick}>Join Movement</a>
-          </li>          <li>
-            <Link to="/raise-issue">Raise Issue</Link>
-          </li>
-          <li className={activeSection === 'contact' ? 'active' : ''}>
-            <a href="#contact" onClick={handleNavClick}>Contact Us</a>
-          </li>
-        </ul><button className="menu-toggle" aria-label="Toggle menu" onClick={toggleMenu}>
+      <motion.nav
+        className={`navbar ${isScrolled ? 'scrolled' : ''}`}
+        initial={{ y: -100 }}
+        animate={{
+          y: isVisible ? 0 : -100,
+          opacity: isVisible ? 1 : 0
+        }}
+        transition={{
+          duration: 0.3,
+          ease: "easeInOut"
+        }}
+      >
+        <motion.div
+          className="scroll-progress"
+          style={{
+            scaleX: scrollYProgress,
+            transformOrigin: "left"
+          }}
+        />
+        <motion.a
+          href="/"
+          className="logo"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Brand
+        </motion.a>
+        <motion.ul
+          className={`nav-links ${isMenuActive ? 'active' : ''}`}
+          initial={{ opacity: 1, x: 0 }}
+          animate={{ 
+            opacity: 1,
+            x: 0,
+            display: 'flex'
+          }}
+        >
+          {navItems.map(({ id, text, className }) => (
+            <motion.li
+              key={id}
+              className={activeSection === id ? 'active' : ''}
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 0 }}
+            >
+              <a
+                href={`#${id}`}
+                onClick={handleNavClick}
+                className={className}
+              >
+                {text}
+              </a>
+            </motion.li>
+          ))}
+        </motion.ul>
+        <motion.button
+          className="menu-toggle"
+          aria-label="Toggle menu"
+          onClick={toggleMenu}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
           ☰
-        </button>
-      </nav>
+        </motion.button>
+      </motion.nav>
     </header>
   );
 };

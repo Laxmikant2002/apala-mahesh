@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import './IssueDetail.css';
 
 // Interface for issue data
@@ -49,15 +50,14 @@ const issueDetails: Record<string, IssueDetailData> = {
 };
 
 const IssueDetail: React.FC = () => {
-  // Get the issue ID from URL params
   const { issueId } = useParams<{ issueId: string }>();
   
-  // State for form fields
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [instituteName, setInstituteName] = useState(''); // New state for institute name
+  const [instituteName, setInstituteName] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
     submitted: boolean;
     success: boolean;
@@ -68,21 +68,33 @@ const IssueDetail: React.FC = () => {
     message: ''
   });
   
-  // Get issue details based on issueId
   const issue = issueId ? issueDetails[issueId] : null;
   
   if (!issue) {
     return (
-      <div className="issue-detail-section">
-        <div className="issue-not-found">
+      <motion.div 
+        className="issue-detail-section"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.div 
+          className="issue-not-found"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
           <h2>Issue Not Found</h2>
-          <p>Sorry, we couldn't find the issue you're looking for.</p>          <Link to="/" className="back-link">Back to Key Issues</Link>
-        </div>
-      </div>
+          <p>Sorry, we couldn't find the issue you're looking for.</p>
+          <motion.div whileHover={{ x: -5 }}>
+            <Link to="/" className="back-link">Back to Key Issues</Link>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     );
   }
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
@@ -106,57 +118,141 @@ const IssueDetail: React.FC = () => {
       return;
     }
     
-    // In a real app, you would send the form data to a server here
-    console.log('Submitting issue:', {
-      issueType: issue.title,
-      name,
-      email,
-      instituteName, // Include institute name in the submission
-      description,
-      location
-    });
+    setIsSubmitting(true);
     
-    // Show success message
-    setSubmitStatus({
-      submitted: true,
-      success: true,
-      message: 'Thank you for reporting this issue. We will review it and take appropriate action.'
-    });
-    
-    // Reset form
-    setName('');
-    setEmail('');
-    setInstituteName(''); // Reset institute name field
-    setDescription('');
-    setLocation('');
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      console.log('Submitting issue:', {
+        issueType: issue.title,
+        name,
+        email,
+        instituteName,
+        description,
+        location
+      });
+      
+      setSubmitStatus({
+        submitted: true,
+        success: true,
+        message: 'Thank you for reporting this issue. We will review it and take appropriate action.'
+      });
+      
+      // Reset form
+      setName('');
+      setEmail('');
+      setInstituteName('');
+      setDescription('');
+      setLocation('');
+    } catch (error) {
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'Failed to submit the report. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
   };
   
   return (
-    <section className="issue-detail-section">
-      <div className="issue-detail-container">
-        <div className="issue-header">
-          <div className="issue-image-container">
-            <img src={issue.imageSrc} alt={issue.title} className="issue-image" />
+    <motion.section 
+      className="issue-detail-section"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <motion.div 
+        className="issue-detail-container"
+        variants={childVariants}
+      >
+        <motion.div 
+          className="issue-header"
+          variants={childVariants}
+        >
+          <motion.div 
+            className="issue-image-container"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.img 
+              src={issue.imageSrc} 
+              alt={issue.title} 
+              className="issue-image"
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5 }}
+            />
             <div className="issue-image-overlay"></div>
-          </div>
-          <h2 className="issue-title">{issue.title}</h2>
-          <p className="issue-description">{issue.description}</p>
-        </div>
+          </motion.div>
+          <motion.h2 
+            className="issue-title"
+            variants={childVariants}
+          >
+            {issue.title}
+          </motion.h2>
+          <motion.p 
+            className="issue-description"
+            variants={childVariants}
+          >
+            {issue.description}
+          </motion.p>
+        </motion.div>
         
-        <div className="issue-form-container">
-          <h3>Report This Issue</h3>
-          <p className="form-intro">
+        <motion.div 
+          className="issue-form-container"
+          variants={childVariants}
+        >
+          <motion.h3 variants={childVariants}>Report This Issue</motion.h3>
+          <motion.p 
+            className="form-intro"
+            variants={childVariants}
+          >
             Help us address this issue by sharing your experience. Your report will be reviewed by our team and may be used to advocate for change.
-          </p>
+          </motion.p>
           
-          {submitStatus.submitted && (
-            <div className={`form-message ${submitStatus.success ? 'success' : 'error'}`}>
-              {submitStatus.message}
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+            {submitStatus.submitted && (
+              <motion.div 
+                className={`form-message ${submitStatus.success ? 'success' : 'error'}`}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {submitStatus.message}
+              </motion.div>
+            )}
+          </AnimatePresence>
           
-          <form className="issue-form" onSubmit={handleSubmit}>
-            <div className="form-group">
+          <motion.form 
+            className="issue-form" 
+            onSubmit={handleSubmit}
+            variants={childVariants}
+          >
+            <motion.div className="form-group" variants={childVariants}>
               <label htmlFor="name">Your Name *</label>
               <input
                 type="text"
@@ -165,10 +261,11 @@ const IssueDetail: React.FC = () => {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your full name"
                 required
+                disabled={isSubmitting}
               />
-            </div>
+            </motion.div>
             
-            <div className="form-group">
+            <motion.div className="form-group" variants={childVariants}>
               <label htmlFor="email">Your Email *</label>
               <input
                 type="email"
@@ -177,10 +274,11 @@ const IssueDetail: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
                 required
+                disabled={isSubmitting}
               />
-            </div>
+            </motion.div>
             
-            <div className="form-group">
+            <motion.div className="form-group" variants={childVariants}>
               <label htmlFor="instituteName">Institute/College/Organization Name</label>
               <input
                 type="text"
@@ -189,10 +287,11 @@ const IssueDetail: React.FC = () => {
                 onChange={(e) => setInstituteName(e.target.value)}
                 placeholder="Enter your institute, college, or organization name"
                 aria-label="Institute, College, or Organization Name"
+                disabled={isSubmitting}
               />
-            </div>
+            </motion.div>
             
-            <div className="form-group">
+            <motion.div className="form-group" variants={childVariants}>
               <label htmlFor="location">Location</label>
               <input
                 type="text"
@@ -200,10 +299,11 @@ const IssueDetail: React.FC = () => {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="City, State (optional)"
+                disabled={isSubmitting}
               />
-            </div>
+            </motion.div>
             
-            <div className="form-group">
+            <motion.div className="form-group" variants={childVariants}>
               <label htmlFor="description">Describe Your Experience *</label>
               <textarea
                 id="description"
@@ -212,17 +312,31 @@ const IssueDetail: React.FC = () => {
                 rows={5}
                 placeholder="Please describe how this issue has affected you or others you know"
                 required
+                disabled={isSubmitting}
               ></textarea>
-            </div>
+            </motion.div>
             
-            <div className="form-actions">
-              <Link to="/" className="back-link">Back to Key Issues</Link>
-              <button type="submit" className="submit-button">Submit Report</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
+            <motion.div 
+              className="form-actions"
+              variants={childVariants}
+            >
+              <motion.div whileHover={{ x: -3 }}>
+                <Link to="/" className="back-link">Back to Key Issues</Link>
+              </motion.div>
+              <motion.button
+                type="submit"
+                className="submit-button"
+                disabled={isSubmitting}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Report'}
+              </motion.button>
+            </motion.div>
+          </motion.form>
+        </motion.div>
+      </motion.div>
+    </motion.section>
   );
 };
 
