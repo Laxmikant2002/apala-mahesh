@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './TopBar.css';
 
 interface Language {
@@ -14,7 +15,8 @@ const languages: Language[] = [
 ];
 
 const TopBar: React.FC = () => {
-  const [selectedLang, setSelectedLang] = useState('en');
+  const { t, i18n } = useTranslation();
+  const [selectedLang, setSelectedLang] = useState(i18n.language || 'en');
   const [isHidden, setIsHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { scrollY } = useScroll();
@@ -41,11 +43,11 @@ const TopBar: React.FC = () => {
   useMotionValueEvent(scrollY, "change", (latest) => {
     handleScroll();
   });
-
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLang(e.target.value);
-    // Here you would typically implement language change logic
-    console.log('Language changed to:', e.target.value);
+    const newLang = e.target.value;
+    setSelectedLang(newLang);
+    i18n.changeLanguage(newLang);
+    console.log('Language changed to:', newLang);
   };
 
   return (
@@ -66,12 +68,11 @@ const TopBar: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <motion.select
+      >        <motion.select
           className="language-selector"
           value={selectedLang}
           onChange={handleLanguageChange}
-          aria-label="Select language"
+          aria-label={t('topBar.language')}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >

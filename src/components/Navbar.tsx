@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './Navbar.css';
 import TopBar from './TopBar';
 
 const Navbar: React.FC = () => {
+  const { t } = useTranslation();
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [isScrolled, setIsScrolled] = useState(false);
@@ -94,13 +96,12 @@ const Navbar: React.FC = () => {
       window.removeEventListener('scroll', handleSectionHighlight);
     };
   }, []);
-
   const navItems = [
-    { id: 'hero', text: 'Home' },
-    { id: 'key-issues', text: 'Key Issues' },
-    { id: 'media', text: 'Media' },
-    { id: 'join', text: 'Join Movement', className: 'btn-join' },
-    { id: 'contact', text: 'Contact Us' }
+    { id: 'hero', text: t('navbar.home') },
+    { id: 'key-issues', text: t('navbar.keyIssues') },
+    { id: 'media', text: t('navbar.media') },
+    { id: 'join', text: t('navbar.joinMovement'), className: 'btn-join' },
+    { id: 'contact', text: t('navbar.contactUs') }
   ];
 
   return (

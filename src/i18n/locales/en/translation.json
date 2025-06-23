@@ -1,0 +1,49 @@
+{
+  "topBar": {
+    "language": "Language"
+  },
+  "navbar": {
+    "home": "Home",
+    "keyIssues": "Key Issues",
+    "media": "Media",
+    "joinMovement": "Join Movement",
+    "contactUs": "Contact Us"
+  },
+  "hero": {
+    "title": "Education for All",
+    "subtitle": "Empowering through knowledge",
+    "raiseIssue": "Raise Issue"
+  },
+  "keyIssues": {
+    "title": "Key Issues",
+    "description": "The most pressing educational challenges we're addressing"
+  },
+  "media": {
+    "title": "Media",
+    "description": "Our impact in the news and social media"
+  },
+  "joinMovement": {
+    "title": "Join the Movement",
+    "description": "Be part of the educational reform",
+    "joinButton": "Join Now"
+  },
+  "contactUs": {
+    "title": "Contact Us",
+    "name": "Your Name",
+    "email": "Email Address",
+    "message": "Your Message",
+    "sendButton": "Send Message"
+  },
+  "footer": {
+    "rights": "All Rights Reserved",
+    "raiseIssue": "Raise Issue"
+  },
+  "raiseIssue": {
+    "title": "Raise an Issue",
+    "name": "Your Name",
+    "email": "Email Address",
+    "organization": "Institute/College/Organization Name",
+    "issue": "Describe the Issue",
+    "submit": "Submit Issue"
+  }
+}
