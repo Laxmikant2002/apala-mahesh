@@ -33,24 +33,6 @@ const Footer: React.FC = () => {
 
     setIsSubmitting(true);
 
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      console.log('Subscribing email:', email);
-      setSubscriptionStatus({
-        message: 'Thank you for subscribing to our newsletter!',
-        type: 'success'
-      });
-      setEmail('');
-    } catch (error) {
-      setSubscriptionStatus({
-        message: 'Failed to subscribe. Please try again later.',
-        type: 'error'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const footerVariants = {
@@ -102,10 +84,11 @@ const Footer: React.FC = () => {
             <h3>Connect With Us</h3>
             <div className="social-media" aria-label="Social media links">
               <motion.a 
-                href="https://facebook.com" 
+                href="https://www.facebook.com/share/1DnFRqiX7s/?mibextid=wwXIfr" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 aria-label="Visit our Facebook page"
+                className="social-facebook"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -116,30 +99,33 @@ const Footer: React.FC = () => {
                 target="_blank" 
                 rel="noopener noreferrer" 
                 aria-label="Visit our Twitter page"
+                className="social-twitter"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <i className="fab fa-twitter" aria-hidden="true"></i>
               </motion.a>
               <motion.a 
-                href="https://instagram.com" 
+                href="https://www.instagram.com/mahesh_kamble_inc_offical_?igsh=dDkydGY5b2tzN3Z2&utm_source=qr" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 aria-label="Visit our Instagram page"
+                className="social-instagram"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <i className="fab fa-instagram" aria-hidden="true"></i>
               </motion.a>
               <motion.a 
-                href="https://linkedin.com" 
+                href="https://www.youtube.com/@%E0%A4%86%E0%A4%AA%E0%A4%B2%E0%A4%BE_%E0%A4%AE%E0%A4%B9%E0%A5%87%E0%A4%B6" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                aria-label="Visit our LinkedIn page"
+                aria-label="Visit our YouTube channel"
+                className="social-youtube"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <i className="fab fa-linkedin-in" aria-hidden="true"></i>
+                <i className="fab fa-youtube" aria-hidden="true"></i>
               </motion.a>
             </div>
           </motion.div>

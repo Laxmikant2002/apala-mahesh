@@ -146,6 +146,31 @@
   left: 100%;
 }
 
+/* Social Media Brand Colors for Footer */
+.social-facebook:hover {
+  background-color: #3b5998; /* Facebook blue */
+  border-color: #3b5998;
+  box-shadow: 0 5px 15px rgba(59, 89, 152, 0.4);
+}
+
+.social-twitter:hover {
+  background-color: #1da1f2; /* Twitter blue */
+  border-color: #1da1f2;
+  box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
+}
+
+.social-instagram:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  border-color: #e1306c;
+  box-shadow: 0 5px 15px rgba(225, 48, 108, 0.4);
+}
+
+.social-youtube:hover {
+  background-color: #ff0000; /* YouTube red */
+  border-color: #ff0000;
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+}
+
 .newsletter {
   max-width: 400px;
 }

@@ -23,35 +23,35 @@ const JoinMovement: React.FC = () => {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        <h2 className="section-title">{t('joinMovement.title', 'Join Our Movement')}</h2>
-        <div className="section-subtitle">{t('joinMovement.subtitle', 'Support Students and Make a Difference')}</div>
+        <h2 className="section-title">{t('joinMovement.title', 'Maharashtra Student Help Desk')}</h2>
+        <div className="section-subtitle">{t('joinMovement.subtitle', 'Supporting Maharashtra Students and Educational Initiatives')}</div>
       </motion.header>
       <div className="section-content">
         <div className="tabs-container">
           <div 
-            className={`tab ${activeTab === 'sppu' ? 'active' : ''}`}
-            onClick={() => setActiveTab('sppu')}
+            className={`tab ${activeTab === 'Maharashtra' ? 'active' : ''}`}
+            onClick={() => setActiveTab('Maharashtra')}
           >
-            {t('joinMovement.sppu', 'Support SPPU Students')}
+            {t('joinMovement.Maharashtra', 'Maharashtra Carry On Facility')}
           </div>
           <div 
             className={`tab ${activeTab === 'work' ? 'active' : ''}`}
             onClick={() => setActiveTab('work')}
           >
-            {t('joinMovement.workForUs', 'Work For Us')}
+            {t('joinMovement.workForUs', 'Join Our Team')}
           </div>
           <div 
             className={`tab ${activeTab === 'volunteer' ? 'active' : ''}`}
             onClick={() => setActiveTab('volunteer')}
           >
-            {t('joinMovement.volunteerWithUs', 'Volunteer With Us')}
+            {t('joinMovement.volunteerWithUs', 'Student Volunteers')}
           </div>
         </div>
         
         {[
-          { key: 'sppuSupport', jsx: (
-            <div className={`info-card sppu-card ${activeTab === 'sppu' ? 'active' : ''}`}>
-              <h3>Join Our Movement to Support SPPU Students</h3>
+          { key: 'Maharashtra Support', jsx: (
+            <div className={`info-card sppu-card ${activeTab === 'Maharashtra' ? 'active' : ''}`}>
+              <h3>Join Our Movement to Support Maharashtra Students</h3>
               <div className="card-content">
                 <div className="card-image-container">
                   <img 
@@ -60,9 +60,9 @@ const JoinMovement: React.FC = () => {
                     className="card-image"
                   />
                 </div>
-                <div className="sppu-description">
+                <div className="Maharashtra-description">
                   <p>
-                    The "Carry On" Facility is a temporary policy introduced by the Maharashtra Government and implemented by SPPU for the 2024-25 academic year. This student-friendly initiative allows engineering students with backlogs to progress to the next academic year, reducing educational delays and academic pressure.
+                    The "Carry On" Facility is a temporary policy introduced by the Maharashtra Government and implemented by SPPU for the 2022-23 combine passing and 2023-24 academic year. This student-friendly initiative allows engineering students with backlogs to progress to the next academic year, reducing educational delays and academic pressure.
                   </p>
                   <p>
                     Join our movement to spread awareness and provide support to students navigating this process.
@@ -76,34 +76,13 @@ const JoinMovement: React.FC = () => {
                     <li>Allows focus on both current and backlog subjects</li>
                   </ul>
                 </div>
-                
-                <form className="sppu-form">
-                  <h4>Join Our Support Network</h4>
-                  <div className="form-group">
-                    <label htmlFor="sppu-name">Full Name <span className="required">*</span></label>
-                    <input type="text" id="sppu-name" name="name" required />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="sppu-email">Email Address <span className="required">*</span></label>
-                    <input type="email" id="sppu-email" name="email" required />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="sppu-college">College/University <span className="required">*</span></label>
-                    <input type="text" id="sppu-college" name="college" required />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="sppu-message">How would you like to help? <span className="required">*</span></label>
-                    <textarea id="sppu-message" name="message" rows={4} required></textarea>
-                  </div>
-                  <button type="submit" className="form-submit">Join Movement</button>
-                </form>
               </div>
             </div>
           ) },
           
           { key: 'workForUs', jsx: (
             <div className={`info-card work-card ${activeTab === 'work' ? 'active' : ''}`}>
-              <h3>Work For Us</h3>
+              <h3>Join the Maharashtra Student Help Desk Team</h3>
               <div className="card-content">
                 <div className="card-image-container">
                   <img 
@@ -114,16 +93,16 @@ const JoinMovement: React.FC = () => {
                 </div>
                 <div className="work-description">
                   <p>
-                    We at the Indian National Congress (INC), are committed to providing the best quality services for our supporters, volunteers, donors, candidates and of course, our beloved constituents.
+                    We at the Maharashtra Student Help Desk are committed to providing the best quality guidance and support services for students throughout Maharashtra, especially those at SPPU and affiliated institutions.
                   </p>
                   <p>
-                    The INC believes in an inclusive and prosperous India that does not discriminate on the basis of religion, gender, caste, class, race, ethnicity, language, region or creed. The same principles that the founders of our country envisaged for this great nation, that helped us unite as a people and throw off the yoke of oppressive imperialism.
+                    Our organization believes in an inclusive and supportive educational environment that helps students navigate complex university policies, academic requirements, and administrative procedures. We aim to make education more accessible to all, regardless of background.
                   </p>
                   <p>
-                    Our work environment, recruitment policies, training, assessment and career growth prospects are all, a reflection of these very same high ideals.
+                    Our work environment, recruitment policies, training, and career growth prospects are designed to attract passionate individuals who care deeply about student welfare and educational equity.
                   </p>
                   <p>
-                    If you would like to work with us in furthering this dream of peaceful co-existence and help us defeat those that champion divisive politics, while at the same time developing your career in a friendly and invigorating environment, then you have come to the right place.
+                    If you would like to work with us in improving the educational experience of Maharashtra's students and help us create a more supportive academic environment, then you have come to the right place.
                   </p>
                   <p>
                     Please share your resume with us, and we will get back to you shortly.
@@ -131,9 +110,9 @@ const JoinMovement: React.FC = () => {
                 </div>
                 
                 <form className="work-form">
-                  <h4>Details</h4>
+                  <h4>Application Details</h4>
                   <div className="form-group">
-                    <label htmlFor="work-name">Name <span className="required">*</span></label>
+                    <label htmlFor="work-name">Full Name <span className="required">*</span></label>
                     <input type="text" id="work-name" name="name" required />
                   </div>
                   <div className="form-group">
@@ -145,10 +124,10 @@ const JoinMovement: React.FC = () => {
                     <input type="tel" id="work-phone" name="phone" required />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="work-comments">Comments</label>
+                    <label htmlFor="work-comments">Experience with Student Support</label>
                     <textarea id="work-comments" name="comments" rows={4}></textarea>
                   </div>
-                  <button type="submit" className="form-submit">Submit</button>
+                  <button type="submit" className="form-submit">Apply Now</button>
                 </form>
               </div>
             </div>
@@ -156,26 +135,26 @@ const JoinMovement: React.FC = () => {
           
           { key: 'volunteerWithUs', jsx: (
             <div className={`info-card volunteer-card ${activeTab === 'volunteer' ? 'active' : ''}`}>
-              <h3>Volunteer With Us</h3>
+              <h3>Student Volunteer Program</h3>
               <div className="card-content">
                 <div className="card-image-container">
                   <img 
                     src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=1000&auto=format&fit=crop"
-                    alt="Volunteers working together"
+                    alt="Student volunteers working together"
                     className="card-image"
                   />
                 </div>
                 <div className="volunteer-description">
                   <p>
-                    Indian National Congress greatly values the unwavering support of all its volunteers. Your dedication and selfless contributions are pillars of strength to our cause. Sign up as a volunteer to provide your invaluable support to our mission of a secular, democratic, just and inclusive India.
+                    The Maharashtra Student Help Desk greatly values the support of student volunteers from across universities. Your participation and contributions help fellow students navigate educational challenges. Sign up as a volunteer to provide peer support, share knowledge about university policies, and help create a more inclusive academic environment.
                   </p>
                   <p>
-                    Sign up by sharing your contact details with us, and an organizer will get in touch with you soon.
+                    Sign up by sharing your contact details with us, and a coordinator will get in touch with you soon.
                   </p>
                 </div>
                 
                 <form className="volunteer-form">
-                  <h4>Details</h4>
+                  <h4>Student Volunteer Registration</h4>
                   <div className="form-row">
                     <div className="form-group">
                       <label htmlFor="volunteer-fname">First name <span className="required">*</span></label>
@@ -197,8 +176,8 @@ const JoinMovement: React.FC = () => {
                       <input type="tel" id="volunteer-phone" name="phone" required />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="volunteer-state">State</label>
-                      <input type="text" id="volunteer-state" name="state" />
+                      <label htmlFor="volunteer-university">University/College</label>
+                      <input type="text" id="volunteer-university" name="university" />
                     </div>
                     <div className="form-group">
                       <label htmlFor="volunteer-email">Email Address <span className="required">*</span></label>
@@ -207,10 +186,10 @@ const JoinMovement: React.FC = () => {
                   </div>
                   
                   <div className="form-group">
-                    <label htmlFor="volunteer-contribution">Tell us how you can contribute?</label>
+                    <label htmlFor="volunteer-contribution">How would you like to help fellow students?</label>
                     <textarea id="volunteer-contribution" name="contribution" rows={4}></textarea>
                   </div>
-                  <button type="submit" className="form-submit">Submit</button>
+                  <button type="submit" className="form-submit">Register as Volunteer</button>
                 </form>
               </div>
             </div>

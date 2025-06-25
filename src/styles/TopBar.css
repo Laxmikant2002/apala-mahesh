@@ -7,6 +7,32 @@
   --social-icon-hover: rgba(52, 152, 219, 0.1);
 }
 
+/* Social Media Brand Colors */
+.social-icon-facebook:hover {
+  background-color: rgba(59, 89, 152, 0.2);
+  color: #3b5998; /* Facebook blue */
+}
+
+.social-icon-twitter:hover {
+  background-color: rgba(29, 161, 242, 0.2);
+  color: #1da1f2; /* Twitter blue */
+}
+
+.social-icon-instagram:hover {
+  background: radial-gradient(circle at 30% 107%, rgba(253, 244, 151, 0.2) 0%, rgba(253, 244, 151, 0.2) 5%, rgba(253, 89, 73, 0.2) 45%, rgba(214, 36, 159, 0.2) 60%, rgba(40, 90, 235, 0.2) 90%);
+  color: #e1306c; /* Instagram pink */
+}
+
+.social-icon-youtube:hover {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #ff0000; /* YouTube red */
+}
+
+/* Add transitions to social icons */
+.social-icon-facebook, .social-icon-twitter, .social-icon-instagram, .social-icon-youtube {
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
 .top-bar {
   background-color: var(--topbar-bg);
   backdrop-filter: blur(10px);
