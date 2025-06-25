@@ -6,7 +6,8 @@
       "use": "@vercel/static-build",
       "config": {
         "installCommand": "npm install --legacy-peer-deps",
-        "buildCommand": "npm run build"
+        "buildCommand": "npm run build",
+        "outputDirectory": "build"
       }
     }
   ],
@@ -14,27 +15,53 @@
     "sizes": [640, 750, 828, 1080, 1200, 1920],
     "domains": ["images.unsplash.com"],
     "formats": ["image/webp"]
-  },
-  "routes": [
+  },  "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "handle": "filesystem"
     },
     {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
+      "src": "^/static/(.*)",
+      "dest": "/static/$1",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" }
+    },
+    { 
+      "src": "^/favicon.ico$",
+      "dest": "/favicon.ico",
+      "headers": { "cache-control": "public, max-age=86400" }
+    },
+    { 
+      "src": "^/logo(.*).png$",
+      "dest": "/logo$1.png",
+      "headers": { "cache-control": "public, max-age=86400" }
     },
     {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
+      "src": "^/manifest.json$",
+      "dest": "/manifest.json",
+      "headers": { "cache-control": "public, max-age=86400" }
     },
     {
-      "src": "/robots.txt",
-      "dest": "/robots.txt"
+      "src": "^/loading.css$",
+      "dest": "/loading.css",
+      "headers": { "cache-control": "public, max-age=86400" }
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "src": "^/robots.txt$",
+      "dest": "/robots.txt",
+      "headers": { "cache-control": "public, max-age=86400" }
+    },
+    {
+      "src": "^/(.*).js$",
+      "dest": "/$1.js",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" }
+    },
+    {
+      "src": "^/(.*).css$",
+      "dest": "/$1.css",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" }
+    },    {
+      "src": "/[^.]+",
+      "dest": "/index.html",
+      "headers": { "cache-control": "public, max-age=0, must-revalidate" }
     }
   ]
 }

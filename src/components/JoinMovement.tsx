@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import '../styles/JoinMovement.css'; // Ensure you have the appropriate CSS file
 
 const JoinMovement: React.FC = () => {
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState('sppu');
+  
   return (
     <motion.section
       id="join"
@@ -19,15 +23,34 @@ const JoinMovement: React.FC = () => {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        <h2 className="section-title">"Carry On" Facility for Engineering Students</h2>
-        <div className="section-subtitle">Savitribai Phule Pune University (SPPU)</div>
-        <div className="update-date">Updated: February 2025</div>
+        <h2 className="section-title">{t('joinMovement.title', 'Join Our Movement')}</h2>
+        <div className="section-subtitle">{t('joinMovement.subtitle', 'Support Students and Make a Difference')}</div>
       </motion.header>
       <div className="section-content">
+        <div className="tabs-container">
+          <div 
+            className={`tab ${activeTab === 'sppu' ? 'active' : ''}`}
+            onClick={() => setActiveTab('sppu')}
+          >
+            {t('joinMovement.sppu', 'Support SPPU Students')}
+          </div>
+          <div 
+            className={`tab ${activeTab === 'work' ? 'active' : ''}`}
+            onClick={() => setActiveTab('work')}
+          >
+            {t('joinMovement.workForUs', 'Work For Us')}
+          </div>
+          <div 
+            className={`tab ${activeTab === 'volunteer' ? 'active' : ''}`}
+            onClick={() => setActiveTab('volunteer')}
+          >
+            {t('joinMovement.volunteerWithUs', 'Volunteer With Us')}
+          </div>
+        </div>
+        
         {[
-          // Each info card as an object for animation
-          { key: 'intro', jsx: (
-            <div className="info-card intro-card">
+          { key: 'sppuSupport', jsx: (
+            <div className={`info-card sppu-card ${activeTab === 'sppu' ? 'active' : ''}`}>
               <h3>Join Our Movement to Support SPPU Students</h3>
               <div className="card-content">
                 <div className="card-image-container">
@@ -37,166 +60,157 @@ const JoinMovement: React.FC = () => {
                     className="card-image"
                   />
                 </div>
-                <p>
-                  The "Carry On" Facility is a temporary policy introduced by the Maharashtra Government and implemented by SPPU for the 2024-25 academic year. This student-friendly initiative allows engineering students with backlogs to progress to the next academic year, reducing educational delays and academic pressure.
-                </p>
-                <p>
-                  Join our movement to spread awareness and provide support to students navigating this process.
-                </p>
-                <a href="#contact-form" className="cta-button">Join Now</a>
+                <div className="sppu-description">
+                  <p>
+                    The "Carry On" Facility is a temporary policy introduced by the Maharashtra Government and implemented by SPPU for the 2024-25 academic year. This student-friendly initiative allows engineering students with backlogs to progress to the next academic year, reducing educational delays and academic pressure.
+                  </p>
+                  <p>
+                    Join our movement to spread awareness and provide support to students navigating this process.
+                  </p>
+                  
+                  <h4>Benefits to Students</h4>
+                  <ul className="benefits-list">
+                    <li>Prevents the loss of an academic year</li>
+                    <li>Reduces academic pressure on students</li>
+                    <li>Promotes a student-friendly approach to education</li>
+                    <li>Allows focus on both current and backlog subjects</li>
+                  </ul>
+                </div>
+                
+                <form className="sppu-form">
+                  <h4>Join Our Support Network</h4>
+                  <div className="form-group">
+                    <label htmlFor="sppu-name">Full Name <span className="required">*</span></label>
+                    <input type="text" id="sppu-name" name="name" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="sppu-email">Email Address <span className="required">*</span></label>
+                    <input type="email" id="sppu-email" name="email" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="sppu-college">College/University <span className="required">*</span></label>
+                    <input type="text" id="sppu-college" name="college" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="sppu-message">How would you like to help? <span className="required">*</span></label>
+                    <textarea id="sppu-message" name="message" rows={4} required></textarea>
+                  </div>
+                  <button type="submit" className="form-submit">Join Movement</button>
+                </form>
               </div>
             </div>
           ) },
-          { key: 'eligibility', jsx: (
-            <div className="info-card">
-              <h4>Eligibility Criteria</h4>
-              <div className="card-content">
-                <ul className="info-list">
-                  <li>Applies to students from First Year (FE) to Final Year (BE) with failed previous semesters</li>
-                  <li>Eligibility is based on Winter Semester 2024-25 exam results, not Summer Semester 2023-24</li>
-                  <li>Students punished for malpractice (1 + 1) during Summer 2023 exams are ineligible</li>
-                </ul>
-                <div className="note-box">
-                  <strong>Note:</strong> This is a one-time provision for 2024-25 and cannot be used as a precedent.
-                </div>
-              </div>
-            </div>
-          ) },
-          { key: 'process', jsx: (
-            <div className="info-card">
-              <h4>Application Process</h4>
-              <div className="card-content">
-                <div className="process-item">
-                  <div className="process-icon">1</div>
-                  <div className="process-text">
-                    <strong>Deadline:</strong> March 3, 2025
-                  </div>
-                </div>
-                <div className="process-item">
-                  <div className="process-icon">2</div>
-                  <div className="process-text">
-                    <strong>Required Documents:</strong> Winter Exam 2024-25 mark sheets
-                  </div>
-                </div>
-                <div className="process-item">
-                  <div className="process-icon">3</div>
-                  <div className="process-text">
-                    <strong>Submission:</strong> Applications must be submitted to respective colleges
-                  </div>
-                </div>
-                <div className="process-item">
-                  <div className="process-icon">4</div>
-                  <div className="process-text">
-                    <strong>Undertaking:</strong> Submit a signed undertaking by the college principal or director
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) },
-          { key: 'schedule', jsx: (
-            <div className="info-card">
-              <h4>Examination Schedule</h4>
+          
+          { key: 'workForUs', jsx: (
+            <div className={`info-card work-card ${activeTab === 'work' ? 'active' : ''}`}>
+              <h3>Work For Us</h3>
               <div className="card-content">
                 <div className="card-image-container">
                   <img 
-                    src="https://img.freepik.com/premium-photo/young-student-taking-exam-school-with-stress_53876-138989.jpg"
-                    alt="Students taking examination"
+                    src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1000&auto=format&fit=crop"
+                    alt="Team working together"
                     className="card-image"
                   />
                 </div>
-                <div className="schedule-box">
-                  <p><strong>Winter (Odd) and Summer (Even) semester exams are conducted together in 2025.</strong></p>
-                  <p>Students must complete the winter semester syllabus independently.</p>
+                <div className="work-description">
+                  <p>
+                    We at the Indian National Congress (INC), are committed to providing the best quality services for our supporters, volunteers, donors, candidates and of course, our beloved constituents.
+                  </p>
+                  <p>
+                    The INC believes in an inclusive and prosperous India that does not discriminate on the basis of religion, gender, caste, class, race, ethnicity, language, region or creed. The same principles that the founders of our country envisaged for this great nation, that helped us unite as a people and throw off the yoke of oppressive imperialism.
+                  </p>
+                  <p>
+                    Our work environment, recruitment policies, training, assessment and career growth prospects are all, a reflection of these very same high ideals.
+                  </p>
+                  <p>
+                    If you would like to work with us in furthering this dream of peaceful co-existence and help us defeat those that champion divisive politics, while at the same time developing your career in a friendly and invigorating environment, then you have come to the right place.
+                  </p>
+                  <p>
+                    Please share your resume with us, and we will get back to you shortly.
+                  </p>
                 </div>
+                
+                <form className="work-form">
+                  <h4>Details</h4>
+                  <div className="form-group">
+                    <label htmlFor="work-name">Name <span className="required">*</span></label>
+                    <input type="text" id="work-name" name="name" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="work-email">Email Address <span className="required">*</span></label>
+                    <input type="email" id="work-email" name="email" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="work-phone">Phone Number <span className="required">*</span></label>
+                    <input type="tel" id="work-phone" name="phone" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="work-comments">Comments</label>
+                    <textarea id="work-comments" name="comments" rows={4}></textarea>
+                  </div>
+                  <button type="submit" className="form-submit">Submit</button>
+                </form>
               </div>
             </div>
           ) },
-          { key: 'benefits', jsx: (
-            <div className="info-card">
-              <h4>Benefits to Students</h4>
+          
+          { key: 'volunteerWithUs', jsx: (
+            <div className={`info-card volunteer-card ${activeTab === 'volunteer' ? 'active' : ''}`}>
+              <h3>Volunteer With Us</h3>
               <div className="card-content">
-                <ul className="benefit-list">
-                  <li>Prevents the loss of an academic year</li>
-                  <li>Reduces academic pressure on students</li>
-                  <li>Promotes a student-friendly approach to education</li>
-                  <li>Allows focus on both current and backlog subjects</li>
-                </ul>
-              </div>
-            </div>
-          ) },
-          { key: 'tips', jsx: (
-            <div className="info-card">
-              <h4>Tips for Success</h4>
-              <div className="card-content">
-                <div className="tips-container">
-                  <div className="tip-item">
-                    <div className="tip-icon">📚</div>
-                    <div className="tip-text">Plan a study schedule to manage workload</div>
-                  </div>
-                  <div className="tip-item">
-                    <div className="tip-icon">🎯</div>
-                    <div className="tip-text">Prioritize difficult subjects</div>
-                  </div>
-                  <div className="tip-item">
-                    <div className="tip-icon">📖</div>
-                    <div className="tip-text">Utilize university resources (libraries, counseling)</div>
-                  </div>
-                  <div className="tip-item">
-                    <div className="tip-icon">📝</div>
-                    <div className="tip-text">Stay consistent with academic submissions</div>
-                  </div>
-                  <div className="tip-item">
-                    <div className="tip-icon">🧘</div>
-                    <div className="tip-text">Prioritize mental and physical well-being</div>
-                  </div>
+                <div className="card-image-container">
+                  <img 
+                    src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=1000&auto=format&fit=crop"
+                    alt="Volunteers working together"
+                    className="card-image"
+                  />
                 </div>
-              </div>
-            </div>
-          ) },
-          { key: 'reference', jsx: (
-            <div className="info-card">
-              <h4>Official Reference</h4>
-              <div className="card-content">
-                <p className="reference-text">
-                  Maharashtra Government Order No. Miscellaneous-2025/E-970220/Special-3, dated February 10, 2025.
-                </p>
-                <div className="link-container">
-                  <a 
-                    href="http://www.unipune.ac.in" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="cta-link"
-                  >
-                    Visit SPPU Website
-                  </a>
-                  <a href="#join-form" className="cta-link">Join Our Support Network</a>
+                <div className="volunteer-description">
+                  <p>
+                    Indian National Congress greatly values the unwavering support of all its volunteers. Your dedication and selfless contributions are pillars of strength to our cause. Sign up as a volunteer to provide your invaluable support to our mission of a secular, democratic, just and inclusive India.
+                  </p>
+                  <p>
+                    Sign up by sharing your contact details with us, and an organizer will get in touch with you soon.
+                  </p>
                 </div>
-              </div>
-            </div>
-          ) },
-          { key: 'contact', jsx: (
-            <div className="info-card" id="contact-form">
-              <h4>Join Our Movement</h4>
-              <div className="card-content">
-                <p>Fill out the form below to join our movement to support students and advocate for education reform.</p>
-                <form className="join-form">
-                  <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input type="text" id="name" name="name" required />
+                
+                <form className="volunteer-form">
+                  <h4>Details</h4>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="volunteer-fname">First name <span className="required">*</span></label>
+                      <input type="text" id="volunteer-fname" name="firstName" required />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="volunteer-mname">Middle name <span className="required">*</span></label>
+                      <input type="text" id="volunteer-mname" name="middleName" required />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="volunteer-lname">Last name <span className="required">*</span></label>
+                      <input type="text" id="volunteer-lname" name="lastName" required />
+                    </div>
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input type="email" id="email" name="email" required />
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="volunteer-phone">Phone Number <span className="required">*</span></label>
+                      <input type="tel" id="volunteer-phone" name="phone" required />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="volunteer-state">State</label>
+                      <input type="text" id="volunteer-state" name="state" />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="volunteer-email">Email Address <span className="required">*</span></label>
+                      <input type="email" id="volunteer-email" name="email" required />
+                    </div>
                   </div>
+                  
                   <div className="form-group">
-                    <label htmlFor="university">University/College</label>
-                    <input type="text" id="university" name="university" />
+                    <label htmlFor="volunteer-contribution">Tell us how you can contribute?</label>
+                    <textarea id="volunteer-contribution" name="contribution" rows={4}></textarea>
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="message">How would you like to contribute?</label>
-                    <textarea id="message" name="message" rows={4}></textarea>
-                  </div>
-                  <button type="submit" className="form-submit">Join Now</button>
+                  <button type="submit" className="form-submit">Submit</button>
                 </form>
               </div>
             </div>

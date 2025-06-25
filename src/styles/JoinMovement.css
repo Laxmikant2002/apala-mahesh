@@ -305,6 +305,101 @@
   transform: scale(1.05);
 }
 
+/* Tabs styles */
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.tab {
+  padding: 12px 24px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #0284c7;
+  border: 1px solid #e0f2fe;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 3px 10px rgba(34, 197, 94, 0.2);
+}
+
+.tab.active {
+  background: linear-gradient(90deg, #22c55e, #06b6d4);
+  color: white;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+}
+
+/* SPPU Students Section Styles */
+.sppu-card.active {
+  display: block;
+}
+
+.sppu-card {
+  display: none;
+}
+
+.sppu-description {
+  padding: 20px 24px;
+  line-height: 1.6;
+}
+
+.benefits-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 20px 0;
+}
+
+.benefits-list li {
+  padding: 8px 0 8px 30px;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.benefits-list li::before {
+  content: '✅';
+  position: absolute;
+  left: 0;
+  color: #22c55e;
+}
+
+.sppu-form {
+  padding: 0 24px 24px;
+}
+
+/* Ensure all card types are hidden except active one */
+.work-card, .volunteer-card {
+  display: none;
+}
+
+.work-card.active, .volunteer-card.active {
+  display: block;
+}
+
+/* Card image styles */
+.card-image-container {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card-image:hover {
+  transform: scale(1.05);
+}
+
 /* Responsive styles */
 @media (max-width: 900px) {
   .section-content {
