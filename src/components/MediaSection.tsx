@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import '../styles/MediaSection.css'; // Ensure you have the correct path to your CSS file
+import '../styles/MediaSection.css';
+import LazyImage from './LazyImage';
 
 const MediaSection: React.FC = () => {
   return (
@@ -33,21 +34,32 @@ const MediaSection: React.FC = () => {
           <h3 className="subsection-title">Photos</h3>
           <div className="media-grid">
             {[{
-              src: "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-              alt: "Students studying in a classroom",
-              caption: "Community workshop on educational reforms"
+              src: "/images/media/student-protest1.jpg",
+              alt: "Students protesting with flags and banners"
             }, {
-              src: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-              alt: "Students in a library",
-              caption: "Library improvement initiative"
+              src: "/images/media/student-protest2.jpg",
+              alt: "Student rally at Savitribai Phule Pune University"
             }, {
-              src: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-              alt: "Students participating in group discussion",
-              caption: "Student forum on educational challenges"
+              src: "/images/media/student-protest3.jpg",
+              alt: "Students holding protest signs"
             }, {
-              src: "https://images.unsplash.com/photo-1492538368677-f6e0afe31dcc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-              alt: "Students at a campus event",
-              caption: "Awareness campaign at university campus"
+              src: "/images/media/student-protest4.jpg",
+              alt: "Student union gathering at university"
+            }, {
+              src: "/images/media/student-protest5.jpg",
+              alt: "SPPU students at awareness campaign"
+            }, {
+              src: "/images/media/student-protest6.jpg",
+              alt: "Educational reform movement"
+            }, {
+              src: "/images/media/student-protest7.jpg",
+              alt: "Student volunteers gathering"
+            }, {
+              src: "/images/media/student-protest8.jpg",
+              alt: "Campus protest for student issues",
+            },{
+              src: "/images/media/student-protest9.jpg",
+              alt: "Students at a peaceful protest"
             }].map((photo, idx) => (
               <motion.div
                 className="media-item photo-item"
@@ -57,8 +69,7 @@ const MediaSection: React.FC = () => {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
-                <img src={photo.src} alt={photo.alt} />
-                <div className="media-caption">{photo.caption}</div>
+                <LazyImage src={photo.src} alt={photo.alt} />
               </motion.div>
             ))}
           </div>
@@ -99,7 +110,7 @@ const MediaSection: React.FC = () => {
                     allowFullScreen
                   ></iframe>
                 </div>
-                <div className="media-caption">{video.caption}</div>
+                <div className="video-title">{video.title}</div>
               </motion.div>
             ))}
           </div>

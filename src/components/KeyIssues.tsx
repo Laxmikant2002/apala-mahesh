@@ -20,6 +20,22 @@ const KeyIssues: React.FC = () => {
   
   const initialIssues: KeyIssue[] = [
     {      id: 1,
+      title: "Stop Paper Leak and Ensure Timely Exam Results",
+      shortDescription: "Demand for transparent and secure examination processes",
+      fullDescription: "The increasing incidents of paper leaks and delayed results are severely impacting students' academic progress and career opportunities. We are advocating for stricter protocols and accountability.",
+      imageUrl: "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      learnMoreUrl: "#paper-leak",
+      issueId: "stop-paper-leak"
+    },
+    {      id: 2,
+      title: "Restoration of Student Union Elections",
+      shortDescription: "Advocating for democratic representation in educational institutions",
+      fullDescription: "Student unions provide essential democratic representation on campus. We're fighting to restore and strengthen these vital platforms for student voices across Maharashtra institutions.",
+      imageUrl: "https://images.unsplash.com/photo-1494059980473-813e73ee784b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      learnMoreUrl: "#student-unions",
+      issueId: "student-union-elections"
+    },
+    {      id: 3,
       title: "Academic Pressure and Mental Health",
       shortDescription: "63.5% of students report stress due to academic pressure",
       fullDescription: "The intense academic environment in India, driven by competitive exams, leads to anxiety and depression among students.",
@@ -27,26 +43,29 @@ const KeyIssues: React.FC = () => {
       learnMoreUrl: "#academic-pressure",
       issueId: "academic-pressure-and-mental-health"
     },
-    {      id: 2,
+  ];
+  
+  const additionalIssues: KeyIssue[] = [
+    {
+      id: 4,
       title: "Financial Barriers",
       shortDescription: "Only 4% of higher education students benefit from education loans",
       fullDescription: "Rising tuition costs and limited financial aid force many students to abandon higher education.",
       imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
       learnMoreUrl: "#financial-barriers",
       issueId: "financial-barriers"
-    },    {      id: 3,
+    },
+    {
+      id: 5,
       title: "Inadequate Educational Infrastructure",
       shortDescription: "Class 10 dropout rate reached 20.6% in 2021-22",
       fullDescription: "Overcrowded classrooms and poor infrastructure hinder effective learning and contribute to high dropout rates.",
       imageUrl: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
       learnMoreUrl: "#infrastructure-issues",
       issueId: "inadequate-educational-infrastructure"
-    }
-  ];
-  
-  const additionalIssues: KeyIssue[] = [
+    },
     {
-      id: 4,
+      id: 6,
       title: "Exam-related Issues",
       shortDescription: "52% of students experience extreme stress during exams",
       fullDescription: "The competitive exam culture in India causes significant stress, compounded by rote learning and other systemic issues.",
@@ -55,7 +74,7 @@ const KeyIssues: React.FC = () => {
       issueId: "exam-related-issues"
     },
     {
-      id: 5,
+      id: 7,
       title: "College-related Issues",
       shortDescription: "74% of first-year students feel overwhelmed by academic workload",
       fullDescription: "College students face academic pressure, financial stress, and challenges in social and cultural adjustment.",
@@ -64,7 +83,7 @@ const KeyIssues: React.FC = () => {
       issueId: "college-related-issues"
     },
     {
-      id: 6,
+      id: 8,
       title: "Library Issues",
       shortDescription: "Many libraries face infrastructure and funding challenges",
       fullDescription: "Limited access to up-to-date resources and poor infrastructure in libraries hinder students' ability to study effectively.",
@@ -72,7 +91,7 @@ const KeyIssues: React.FC = () => {
       learnMoreUrl: "#library-issues",
       issueId: "library-issues"
     },    {
-      id: 7,
+      id: 9,
       title: "University-related Issues",
       shortDescription: "Administrative inefficiencies are common complaints among students",
       fullDescription: "Bureaucratic hurdles, inadequate support systems, and poor infrastructure in universities create significant challenges.",

@@ -141,7 +141,12 @@ const Navbar: React.FC = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          Brand
+          <img 
+            src="/logo.png" 
+            alt="आपला महेश" 
+            className="brand-logo" 
+          />
+          <span className="logo-text">आपला महेश</span>
         </motion.a>        <ul
           className={`nav-links ${isMenuActive ? 'active' : ''}`}
         >          {navItems.map(({ id, text, className }) => (

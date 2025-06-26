@@ -1,39 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import '../styles/Footer.css';
 
 const Footer: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [subscriptionStatus, setSubscriptionStatus] = useState<{
-    message: string;
-    type: 'success' | 'error' | null;
-  }>({ message: '', type: null });
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      setSubscriptionStatus({
-        message: 'Please enter your email address',
-        type: 'error'
-      });
-      return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setSubscriptionStatus({
-        message: 'Please enter a valid email address',
-        type: 'error'
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-
-  };
 
   const footerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -130,40 +100,7 @@ const Footer: React.FC = () => {
             </div>
           </motion.div>
 
-          <motion.div className="footer-section" variants={childVariants}>
-            <h3>Stay Updated</h3>
-            <form onSubmit={handleSubscribe} className="newsletter-form">
-              <div className="input-group">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  aria-label="Email for newsletter"
-                  disabled={isSubmitting}
-                />
-                <motion.button 
-                  type="submit"
-                  disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  aria-label="Subscribe to newsletter"
-                >
-                  {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-                </motion.button>
-              </div>
-              {subscriptionStatus.message && (
-                <motion.p 
-                  className={`subscription-message ${subscriptionStatus.type}`}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                >
-                  {subscriptionStatus.message}
-                </motion.p>
-              )}
-            </form>
-          </motion.div>
+
         </div>
 
         <motion.div 
@@ -187,6 +124,23 @@ const Footer: React.FC = () => {
               Terms of Use
             </motion.a>
           </div>
+        </motion.div>
+        <motion.div 
+          className="developer-credit"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          variants={childVariants}
+        >
+          <p>Developed by <motion.a 
+              href="https://portfolio-website-21goe9m59-laxmikant2002s-projects.vercel.app/" 
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ color: '#22c55e' }}
+            >
+              Laxmikant Shinde
+            </motion.a>
+          </p>
         </motion.div>
       </div>
     </motion.footer>

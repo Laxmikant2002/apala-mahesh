@@ -85,22 +85,66 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
+  .hero-container {
+    background-image: url('../../public/images/hero-background-1.jpg');
+    background-position: center center;
+    background-size: cover;
+    min-height: 100vh;
+    height: auto;
+    padding: 100px 0 60px;
+    margin-top: 80px; /* Adjusted for mobile headers */
+  }
+  
+  .hero-content {
+    padding: 20px;
+    max-width: 100%;
+  }
+  
   .hero-content h1 {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
+    margin-bottom: 0.8rem;
   }
   
   .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
   }
   
   .hero-cta {
     flex-direction: column;
     gap: 15px;
+    width: 100%;
   }
   
   .cta-primary, .cta-secondary {
-    padding: 10px 20px;
+    padding: 12px 20px;
     width: 80%;
     margin: 0 auto;
+    font-size: 0.95rem;
+  }
+  
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.65); /* Darker overlay on mobile for better text visibility */
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .hero-container {
+    padding: 80px 0 40px;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.9rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .cta-primary, .cta-secondary {
+    width: 90%;
+    padding: 10px 15px;
   }
 }
