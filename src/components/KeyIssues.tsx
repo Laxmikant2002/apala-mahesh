@@ -114,86 +114,89 @@ const KeyIssues: React.FC = () => {
     console.log("Previous slide clicked");
   };
   return (
-    <motion.section 
-      className="key-issues-section" 
-      id="key-issues"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.7 }}
-    >
-      <motion.div 
-        className="key-issues-header"
-        initial={{ opacity: 0, y: -30 }}
+    <div className="key-issues-section">
+      <div className="key-issues-divider"></div>
+      <motion.section 
+        className="key-issues-section" 
+        id="key-issues"
+        initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.7, delay: 0.1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.7 }}
       >
-        <h2>KEY ISSUES</h2>
-        <div className="key-issues-navigation">
-          <button className="nav-arrow prev" onClick={prevSlide} aria-label="Previous issue">
-            &#8592;
-          </button>
-          <button className="nav-arrow next" onClick={nextSlide} aria-label="Next issue">
-            &#8594;
-          </button>
-        </div>
-      </motion.div>
-      <div className="key-issues-container">
-        {keyIssues.map((issue, idx) => (
-          <motion.div 
-            className="issue-card-wrapper" 
-            key={issue.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: idx * 0.1 }}
-          >
-            <Link to={`/issues/${issue.issueId}`} className="issue-card-link">
-              <div className="issue-card">                <div className="issue-card-image">
-                  <LazyImage src={issue.imageUrl} alt={issue.title} width={400} height={300} />
-                  <div className="issue-overlay">
-                    <h3>{issue.title}</h3>
-                    <p>{issue.shortDescription}</p>
-                  </div>
-                </div>                <div className="issue-card-footer">
-                  <p>{issue.fullDescription}</p>
-                  <div className="issue-card-actions">
-                    <button 
-                      className="learn-more-button" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        window.open(issue.learnMoreUrl, '_blank');
-                      }}
-                    >                      Learn More <span className="arrow">&#8594;</span>
-                    </button>
-                    <button 
-                      className="raise-issue" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        window.location.href = `/issues/${issue.issueId}`;
-                      }}
-                    >
-                      Raise Issue <span className="arrow">&#8594;</span>
-                    </button>
+        <motion.div 
+          className="key-issues-header"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+        >
+          <h2>KEY ISSUES</h2>
+          <div className="key-issues-navigation">
+            <button className="nav-arrow prev" onClick={prevSlide} aria-label="Previous issue">
+              &#8592;
+            </button>
+            <button className="nav-arrow next" onClick={nextSlide} aria-label="Next issue">
+              &#8594;
+            </button>
+          </div>
+        </motion.div>
+        <div className="key-issues-container">
+          {keyIssues.map((issue, idx) => (
+            <motion.div 
+              className="issue-card-wrapper" 
+              key={issue.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+            >
+              <Link to={`/issues/${issue.issueId}`} className="issue-card-link">
+                <div className="issue-card">                <div className="issue-card-image">
+                    <LazyImage src={issue.imageUrl} alt={issue.title} width={400} height={300} />
+                    <div className="issue-overlay">
+                      <h3>{issue.title}</h3>
+                      <p>{issue.shortDescription}</p>
+                    </div>
+                  </div>                <div className="issue-card-footer">
+                    <p>{issue.fullDescription}</p>
+                    <div className="issue-card-actions">
+                      <button 
+                        className="learn-more-button" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          window.open(issue.learnMoreUrl, '_blank');
+                        }}
+                      >                        Learn More <span className="arrow">&#8594;</span>
+                      </button>
+                      <button 
+                        className="raise-issue" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.location.href = `/issues/${issue.issueId}`;
+                        }}
+                      >
+                        Raise Issue <span className="arrow">&#8594;</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
-      </div>
-      <div className="view-more-container">
-        <button 
-          className="view-more-button" 
-          onClick={() => setShowMore(!showMore)}
-          aria-expanded={showMore}
-        >
-          {showMore ? 'View Less' : 'View More'}
-        </button>
-      </div>
-    </motion.section>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+        <div className="view-more-container">
+          <button 
+            className="view-more-button" 
+            onClick={() => setShowMore(!showMore)}
+            aria-expanded={showMore}
+          >
+            {showMore ? 'View Less' : 'View More'}
+          </button>
+        </div>
+      </motion.section>
+    </div>
   );
 };
 

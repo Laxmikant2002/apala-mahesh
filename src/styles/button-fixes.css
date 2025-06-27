@@ -8,12 +8,15 @@
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  color: inherit;
+  color: #111111;
   outline: none;
+  transition: all 0.3s ease-in-out;
 }
 
-.learn-more-button:focus {
+.learn-more-button:focus,
+.learn-more-button:hover {
   text-decoration: underline;
+  color: #000000;
 }
 
 /* Fix for any nested button clicks */

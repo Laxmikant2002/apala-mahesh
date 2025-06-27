@@ -14,7 +14,7 @@
   margin-top: 95px; /* Adjusted to account for TopBar (40px) + Navbar height (~55px) */
   padding-top: 0; /* Removed padding as we're using margin for separation */
   z-index: 1;
-  border-top: 2px solid #2ecc71; /* Subtle border to mark separation */
+  border-top: 2px solid #010a04; /* Subtle border to mark separation */
 }
 
 .overlay {
@@ -61,7 +61,7 @@
 }
 
 .cta-primary {
-  background-color: #2ecc71;
+  background-color: #030e07;
   color: white;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .cta-primary:hover {
-  background-color: #27ae60;
+  background-color: #06100a;
 }
 
 .cta-secondary:hover {

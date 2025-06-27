@@ -142,12 +142,23 @@ const Navbar: React.FC = () => {
           whileTap={{ scale: 0.95 }}
         >
           <img 
-            src="/logo.png" 
+            src="/images/logo/apala-mahesh-logo.png" 
             alt="आपला महेश" 
-            className="brand-logo" 
+            className="brand-logo-img" 
+            width="58" 
+            height="58" 
           />
-          <span className="logo-text">आपला महेश</span>
-        </motion.a>        <ul
+          <span className="logo-text" style={{ color: '#111', background: 'none', WebkitBackgroundClip: 'unset' }}>आपला महेश</span>
+        </motion.a>
+        {isMenuActive && (
+          <div
+            className={`mobile-menu-overlay${isMenuActive ? ' active' : ''}`}
+            aria-hidden={!isMenuActive}
+            tabIndex={-1}
+            onClick={() => setIsMenuActive(false)}
+          />
+        )}
+        <ul
           className={`nav-links ${isMenuActive ? 'active' : ''}`}
         >          {navItems.map(({ id, text, className }) => (
             <li
@@ -160,6 +171,7 @@ const Navbar: React.FC = () => {
                 className={className}
               >
                 {text}
+                <span className={`nav-underline${activeSection === id ? ' active' : ''}`}></span>
               </a>
             </li>
           ))}
@@ -170,8 +182,12 @@ const Navbar: React.FC = () => {
           onClick={toggleMenu}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          animate={isMenuActive ? { rotate: 90 } : { rotate: 0 }}
+          transition={{ duration: 0.3 }}
         >
-          ☰
+          <span className="hamburger-bar"></span>
+          <span className="hamburger-bar"></span>
+          <span className="hamburger-bar"></span>
         </motion.button>
       </motion.nav>
     </header>

@@ -84,20 +84,21 @@ const TopBar: React.FC = () => {
         </motion.select>
         <div className="social-icons">
           {[
-            { href: "https://www.facebook.com/share/1DnFRqiX7s/?mibextid=wwXIfr", icon: "facebook-f", label: "Facebook", color: "facebook" },
-            { href: "https://twitter.com", icon: "twitter", label: "Twitter", color: "twitter" },
-            { href: "https://www.instagram.com/mahesh_kamble_inc_offical_?igsh=dDkydGY5b2tzN3Z2&utm_source=qr", icon: "instagram", label: "Instagram", color: "instagram" },
-            { href: "https://www.youtube.com/@%E0%A4%86%E0%A4%AA%E0%A4%B2%E0%A4%BE_%E0%A4%AE%E0%A4%B9%E0%A5%87%E0%A4%B6", icon: "youtube", label: "YouTube", color: "youtube" }
-          ].map(({ href, icon, label, color }) => (
+            { href: "https://www.facebook.com/share/1DnFRqiX7s/?mibextid=wwXIfr", icon: "facebook-f", label: "Facebook", color: "facebook", brand: '#1877F3' },
+            { href: "https://twitter.com", icon: "twitter", label: "Twitter", color: "twitter", brand: '#1DA1F2' },
+            { href: "https://www.instagram.com/mahesh_kamble_inc_offical_?igsh=dDkydGY5b2tzN3Z2&utm_source=qr", icon: "instagram", label: "Instagram", color: "instagram", brand: '#E1306C' },
+            { href: "https://www.youtube.com/@%E0%A4%86%E0%A4%AA%E0%A4%B2%E0%A4%BE_%E0%A4%AE%E0%A4%B9%E0%A5%87%E0%A4%B6", icon: "youtube", label: "YouTube", color: "youtube", brand: '#FF0000' }
+          ].map(({ href, icon, label, color, brand }) => (
             <motion.a
               key={icon}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={label}
-              className={`social-icon-${color}`}
+              className={`social-icon social-icon-${color}`}
               whileHover={{ y: -2, scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              style={{ color: brand }}
             >
               <i className={`fab fa-${icon}`}></i>
             </motion.a>

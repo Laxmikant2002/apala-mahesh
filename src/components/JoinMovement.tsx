@@ -7,6 +7,11 @@ const JoinMovement: React.FC = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('sppu');
   
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+  };
+
   return (
     <motion.section
       id="join"
@@ -16,6 +21,7 @@ const JoinMovement: React.FC = () => {
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.7 }}
     >
+      <div className="join-divider"></div>
       <motion.header
         className="section-header"
         initial={{ opacity: 0, y: -30 }}
@@ -109,7 +115,7 @@ const JoinMovement: React.FC = () => {
                   </p>
                 </div>
                 
-                <form className="work-form">
+                <form className="work-form" onSubmit={handleFormSubmit}>
                   <h4>Application Details</h4>
                   <div className="form-group">
                     <label htmlFor="work-name">Full Name <span className="required">*</span></label>

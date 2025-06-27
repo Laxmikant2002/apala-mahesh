@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import '../styles/ContactUs.css';
 
 const ContactUs: React.FC = () => {
+  const [formMessage, setFormMessage] = useState<string | null>(null);
+  const [formSuccess, setFormSuccess] = useState<boolean>(false);
 
   return (
     <motion.section
@@ -33,7 +35,7 @@ const ContactUs: React.FC = () => {
           {[{
             icon: 'fas fa-map-marker-alt',
             title: 'Our Address',
-            text: (<p>Congress Bhavan, Gaothan,<br />Shivajinagar, Pune,<br />Maharashtra 411005</p>)
+            text: (<p>Congress Bhavan, Gaothan,<br />Shivajinagar, Pune,<br />Maharashtra 411005</p>)
           }, {
             icon: 'fas fa-envelope',
             title: 'Email Us',
@@ -63,6 +65,16 @@ const ContactUs: React.FC = () => {
         </motion.div>
 
       </div>
+      {formMessage && (
+        <motion.div
+          className={`form-message${formSuccess ? ' success' : ' error'}`}
+          initial={{ opacity: 0, y: 20, x: formSuccess ? 0 : -10 }}
+          animate={{ opacity: 1, y: 0, x: formSuccess ? 0 : [0, -8, 8, -8, 8, 0] }}
+          transition={{ duration: 0.5, type: formSuccess ? 'spring' : 'tween' }}
+        >
+          {formMessage}
+        </motion.div>
+      )}
     </motion.section>
   );
 };

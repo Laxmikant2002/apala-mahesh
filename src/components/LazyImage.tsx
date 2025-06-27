@@ -8,6 +8,8 @@ interface LazyImageProps {
   height?: string | number;
 }
 
+const FALLBACK_IMAGE = '/images/media/image-not-found.png';
+
 const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, width, height }) => {
   return (
     <img 
@@ -18,10 +20,9 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, width, heigh
       width={width} 
       height={height}
       onError={(e) => {
-        // If image fails to load, use a placeholder
         const target = e.target as HTMLImageElement;
         target.onerror = null; // Prevent infinite loop
-        target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
+        target.src = FALLBACK_IMAGE;
       }}
     />
   );

@@ -13,6 +13,7 @@ const MediaSection: React.FC = () => {
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.7 }}
     >
+      <div className="media-divider"></div>
       <motion.h2
         className="section-title"
         initial={{ opacity: 0, y: -30 }}
