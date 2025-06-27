@@ -157,7 +157,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: linear-gradient(90deg, #22c55e, #06b6d4);
+  background: linear-gradient(90deg, #09110c, #06b6d4);
   color: #fff;
   border-radius: 50%;
   font-size: 1.2rem;
@@ -166,7 +166,7 @@
 }
 
 .social-icons a:hover {
-  background: linear-gradient(90deg, #06b6d4, #22c55e);
+  background: linear-gradient(90deg, #06b6d4, #000100);
   transform: scale(1.12);
 }
 
@@ -308,8 +308,8 @@
 
 .form-message.success {
   background: rgba(46, 204, 113, 0.18);
-  border: 1.5px solid #22c55e;
-  color: #22c55e;
+  border: 1.5px solid #010c05;
+  color: #020c06;
   opacity: 1;
   transform: none;
 }
