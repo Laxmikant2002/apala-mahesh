@@ -145,10 +145,10 @@ const Navbar: React.FC = () => {
             src="/images/logo/apala-mahesh-logo.png" 
             alt="आपला महेश" 
             className="brand-logo-img" 
-            width="58" 
-            height="58" 
+            width="120" 
+            height="180" 
           />
-          <span className="logo-text" style={{ color: '#111', background: 'none', WebkitBackgroundClip: 'unset' }}>आपला महेश</span>
+          <span className="logo-text" style={{ color: '#e15f09', background: 'none', WebkitBackgroundClip: 'unset' }}>आपला महेश</span>
         </motion.a>
         {isMenuActive && (
           <div
