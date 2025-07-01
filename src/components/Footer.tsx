@@ -109,7 +109,7 @@ const Footer: React.FC = () => {
           className="footer-bottom"
           variants={childVariants}
         >
-          <p className="copyright">© {new Date().getFullYear()} Apla Mahesh. {t('footer.rights')}</p>
+          <p className="copyright">© {new Date().getFullYear()} Aapla Mahesh. {t('footer.rights')}</p>
           <div className="footer-legal">
             <motion.a 
               href="/privacy" 

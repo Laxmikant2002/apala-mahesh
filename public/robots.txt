@@ -1,3 +1,16 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://yourdomain.com/sitemap.xml
+
+# Disallow crawling of administrative or sensitive paths
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+
+# Allow crawling of important pages
+Allow: /
+Allow: /raise-issue
+Allow: /images/

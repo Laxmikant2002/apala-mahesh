@@ -12,6 +12,8 @@
   z-index: 1;
   border-top: 2px solid #010a04; /* Subtle border to mark separation */
   overflow: hidden;
+  /* Fallback background color while image loads */
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
 }
 
 .hero-background {

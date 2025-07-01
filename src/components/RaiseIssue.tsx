@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { emailService } from '../utils/emailService';
 import '../styles/IssueDetail.css'; // We can reuse the same CSS
 
 const RaiseIssue: React.FC = () => {
@@ -14,13 +15,15 @@ const RaiseIssue: React.FC = () => {
     submitted: boolean;
     success: boolean;
     message: string;
+    loading: boolean;
   }>({
     submitted: false,
     success: false,
-    message: ''
+    message: '',
+    loading: false
   });
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
@@ -28,7 +31,8 @@ const RaiseIssue: React.FC = () => {
       setSubmitStatus({
         submitted: true,
         success: false,
-        message: 'Please fill in all required fields.'
+        message: 'Please fill in all required fields.',
+        loading: false
       });
       return;
     }
@@ -39,35 +43,66 @@ const RaiseIssue: React.FC = () => {
       setSubmitStatus({
         submitted: true,
         success: false,
-        message: 'Please enter a valid email address.'
+        message: 'Please enter a valid email address.',
+        loading: false
       });
       return;
     }
     
-    // In a real app, you would send the form data to a server here
-    console.log('Submitting generic issue:', {
-      name,
-      email,
-      instituteName,
-      issueTitle,
-      description,
-      location
-    });
-    
-    // Show success message
+    // Set loading state
     setSubmitStatus({
       submitted: true,
-      success: true,
-      message: 'Thank you for reporting this issue. We will review it and take appropriate action.'
+      success: false,
+      message: 'Sending your issue report...',
+      loading: true
     });
-    
-    // Reset form
-    setName('');
-    setEmail('');
-    setInstituteName('');
-    setIssueTitle('');
-    setDescription('');
-    setLocation('');
+
+    try {
+      // Send email using the email service
+      const result = await emailService.sendEmail({
+        name,
+        email,
+        subject: issueTitle,
+        message: description,
+        formType: 'issue',
+        additionalData: {
+          instituteName,
+          location
+        }
+      });
+
+      if (result.success) {
+        setSubmitStatus({
+          submitted: true,
+          success: true,
+          message: 'Thank you for reporting this issue. We will review it and take appropriate action.',
+          loading: false
+        });
+        
+        // Reset form
+        setName('');
+        setEmail('');
+        setInstituteName('');
+        setIssueTitle('');
+        setDescription('');
+        setLocation('');
+      } else {
+        setSubmitStatus({
+          submitted: true,
+          success: false,
+          message: result.message || 'Failed to send your report. Please try again.',
+          loading: false
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting issue:', error);
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'An error occurred while sending your report. Please try again later.',
+        loading: false
+      });
+    }
   };
   
   return (
@@ -162,7 +197,13 @@ const RaiseIssue: React.FC = () => {
             
             <div className="form-actions">
               <Link to="/" className="back-link">Back to Home</Link>
-              <button type="submit" className="submit-button">Submit Report</button>
+              <button 
+                type="submit" 
+                className="submit-button"
+                disabled={submitStatus.loading}
+              >
+                {submitStatus.loading ? 'Sending...' : 'Submit Report'}
+              </button>
             </div>
           </form>
         </div>

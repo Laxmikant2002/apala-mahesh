@@ -1,15 +1,187 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { emailService } from '../utils/emailService';
 import '../styles/JoinMovement.css'; // Ensure you have the appropriate CSS file
 
 const JoinMovement: React.FC = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('sppu');
   
-  const handleFormSubmit = (e: React.FormEvent) => {
+  // Form states for work application
+  const [workForm, setWorkForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    comments: ''
+  });
+  
+  // Form states for volunteer registration
+  const [volunteerForm, setVolunteerForm] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    university: '',
+    year: '',
+    skills: '',
+    availability: ''
+  });
+  
+  // Submission status
+  const [submitStatus, setSubmitStatus] = useState<{
+    submitted: boolean;
+    success: boolean;
+    message: string;
+    loading: boolean;
+    formType: string;
+  }>({
+    submitted: false,
+    success: false,
+    message: '',
+    loading: false,
+    formType: ''
+  });
+  
+  const handleWorkFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
+    
+    if (!workForm.name || !workForm.email || !workForm.phone) {
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'Please fill in all required fields.',
+        loading: false,
+        formType: 'work'
+      });
+      return;
+    }
+
+    setSubmitStatus({
+      submitted: true,
+      success: false,
+      message: 'Sending your application...',
+      loading: true,
+      formType: 'work'
+    });
+
+    try {
+      const result = await emailService.sendEmail({
+        name: workForm.name,
+        email: workForm.email,
+        subject: 'Team Application - ' + workForm.name,
+        message: workForm.comments || 'No additional comments provided.',
+        formType: 'join',
+        additionalData: {
+          phone: workForm.phone,
+          position: 'Team Member',
+          experience: workForm.comments
+        }
+      });
+
+      if (result.success) {
+        setSubmitStatus({
+          submitted: true,
+          success: true,
+          message: 'Thank you for your application! We will get back to you shortly.',
+          loading: false,
+          formType: 'work'
+        });
+        
+        // Reset form
+        setWorkForm({ name: '', email: '', phone: '', comments: '' });
+      } else {
+        setSubmitStatus({
+          submitted: true,
+          success: false,
+          message: result.message,
+          loading: false,
+          formType: 'work'
+        });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'An error occurred. Please try again later.',
+        loading: false,
+        formType: 'work'
+      });
+    }
+  };
+
+  const handleVolunteerFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!volunteerForm.firstName || !volunteerForm.lastName || !volunteerForm.email) {
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'Please fill in all required fields.',
+        loading: false,
+        formType: 'volunteer'
+      });
+      return;
+    }
+
+    setSubmitStatus({
+      submitted: true,
+      success: false,
+      message: 'Sending your volunteer registration...',
+      loading: true,
+      formType: 'volunteer'
+    });
+
+    try {
+      const fullName = `${volunteerForm.firstName} ${volunteerForm.middleName} ${volunteerForm.lastName}`.trim();
+      const result = await emailService.sendEmail({
+        name: fullName,
+        email: volunteerForm.email,
+        subject: 'Volunteer Registration - ' + fullName,
+        message: `Skills: ${volunteerForm.skills || 'Not specified'}\nAvailability: ${volunteerForm.availability || 'Not specified'}`,
+        formType: 'volunteer',
+        additionalData: {
+          phone: volunteerForm.phone,
+          university: volunteerForm.university,
+          year: volunteerForm.year,
+          skills: volunteerForm.skills,
+          availability: volunteerForm.availability
+        }
+      });
+
+      if (result.success) {
+        setSubmitStatus({
+          submitted: true,
+          success: true,
+          message: 'Thank you for volunteering! We will contact you soon.',
+          loading: false,
+          formType: 'volunteer'
+        });
+        
+        // Reset form
+        setVolunteerForm({
+          firstName: '', middleName: '', lastName: '', email: '', 
+          phone: '', university: '', year: '', skills: '', availability: ''
+        });
+      } else {
+        setSubmitStatus({
+          submitted: true,
+          success: false,
+          message: result.message,
+          loading: false,
+          formType: 'volunteer'
+        });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'An error occurred. Please try again later.',
+        loading: false,
+        formType: 'volunteer'
+      });
+    }
   };
 
   return (
@@ -115,25 +287,61 @@ const JoinMovement: React.FC = () => {
                   </p>
                 </div>
                 
-                <form className="work-form" onSubmit={handleFormSubmit}>
+                <form className="work-form" onSubmit={handleWorkFormSubmit}>
                   <h4>Application Details</h4>
+                  
+                  {submitStatus.submitted && submitStatus.formType === 'work' && (
+                    <div className={`status-message ${submitStatus.success ? 'success' : 'error'}`}>
+                      {submitStatus.message}
+                    </div>
+                  )}
+                  
                   <div className="form-group">
                     <label htmlFor="work-name">Full Name <span className="required">*</span></label>
-                    <input type="text" id="work-name" name="name" required />
+                    <input 
+                      type="text" 
+                      id="work-name" 
+                      value={workForm.name}
+                      onChange={(e) => setWorkForm({...workForm, name: e.target.value})}
+                      required 
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="work-email">Email Address <span className="required">*</span></label>
-                    <input type="email" id="work-email" name="email" required />
+                    <input 
+                      type="email" 
+                      id="work-email" 
+                      value={workForm.email}
+                      onChange={(e) => setWorkForm({...workForm, email: e.target.value})}
+                      required 
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="work-phone">Phone Number <span className="required">*</span></label>
-                    <input type="tel" id="work-phone" name="phone" required />
+                    <input 
+                      type="tel" 
+                      id="work-phone" 
+                      value={workForm.phone}
+                      onChange={(e) => setWorkForm({...workForm, phone: e.target.value})}
+                      required 
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="work-comments">Experience with Student Support</label>
-                    <textarea id="work-comments" name="comments" rows={4}></textarea>
+                    <textarea 
+                      id="work-comments" 
+                      value={workForm.comments}
+                      onChange={(e) => setWorkForm({...workForm, comments: e.target.value})}
+                      rows={4}
+                    ></textarea>
                   </div>
-                  <button type="submit" className="form-submit">Apply Now</button>
+                  <button 
+                    type="submit" 
+                    className="form-submit"
+                    disabled={submitStatus.loading && submitStatus.formType === 'work'}
+                  >
+                    {submitStatus.loading && submitStatus.formType === 'work' ? 'Sending...' : 'Apply Now'}
+                  </button>
                 </form>
               </div>
             </div>
@@ -159,43 +367,107 @@ const JoinMovement: React.FC = () => {
                   </p>
                 </div>
                 
-                <form className="volunteer-form">
+                <form className="volunteer-form" onSubmit={handleVolunteerFormSubmit}>
                   <h4>Student Volunteer Registration</h4>
+                  
+                  {submitStatus.submitted && submitStatus.formType === 'volunteer' && (
+                    <div className={`status-message ${submitStatus.success ? 'success' : 'error'}`}>
+                      {submitStatus.message}
+                    </div>
+                  )}
+                  
                   <div className="form-row">
                     <div className="form-group">
                       <label htmlFor="volunteer-fname">First name <span className="required">*</span></label>
-                      <input type="text" id="volunteer-fname" name="firstName" required />
+                      <input 
+                        type="text" 
+                        id="volunteer-fname" 
+                        value={volunteerForm.firstName}
+                        onChange={(e) => setVolunteerForm({...volunteerForm, firstName: e.target.value})}
+                        required 
+                      />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="volunteer-mname">Middle name <span className="required">*</span></label>
-                      <input type="text" id="volunteer-mname" name="middleName" required />
+                      <label htmlFor="volunteer-mname">Middle name</label>
+                      <input 
+                        type="text" 
+                        id="volunteer-mname" 
+                        value={volunteerForm.middleName}
+                        onChange={(e) => setVolunteerForm({...volunteerForm, middleName: e.target.value})}
+                      />
                     </div>
                     <div className="form-group">
                       <label htmlFor="volunteer-lname">Last name <span className="required">*</span></label>
-                      <input type="text" id="volunteer-lname" name="lastName" required />
+                      <input 
+                        type="text" 
+                        id="volunteer-lname" 
+                        value={volunteerForm.lastName}
+                        onChange={(e) => setVolunteerForm({...volunteerForm, lastName: e.target.value})}
+                        required 
+                      />
                     </div>
                   </div>
                   
                   <div className="form-row">
                     <div className="form-group">
-                      <label htmlFor="volunteer-phone">Phone Number <span className="required">*</span></label>
-                      <input type="tel" id="volunteer-phone" name="phone" required />
+                      <label htmlFor="volunteer-phone">Phone Number</label>
+                      <input 
+                        type="tel" 
+                        id="volunteer-phone" 
+                        value={volunteerForm.phone}
+                        onChange={(e) => setVolunteerForm({...volunteerForm, phone: e.target.value})}
+                      />
                     </div>
                     <div className="form-group">
                       <label htmlFor="volunteer-university">University/College</label>
-                      <input type="text" id="volunteer-university" name="university" />
+                      <input 
+                        type="text" 
+                        id="volunteer-university" 
+                        value={volunteerForm.university}
+                        onChange={(e) => setVolunteerForm({...volunteerForm, university: e.target.value})}
+                      />
                     </div>
                     <div className="form-group">
                       <label htmlFor="volunteer-email">Email Address <span className="required">*</span></label>
-                      <input type="email" id="volunteer-email" name="email" required />
+                      <input 
+                        type="email" 
+                        id="volunteer-email" 
+                        value={volunteerForm.email}
+                        onChange={(e) => setVolunteerForm({...volunteerForm, email: e.target.value})}
+                        required 
+                      />
                     </div>
                   </div>
                   
                   <div className="form-group">
-                    <label htmlFor="volunteer-contribution">How would you like to help fellow students?</label>
-                    <textarea id="volunteer-contribution" name="contribution" rows={4}></textarea>
+                    <label htmlFor="volunteer-skills">Skills & Expertise</label>
+                    <input 
+                      type="text" 
+                      id="volunteer-skills" 
+                      value={volunteerForm.skills}
+                      onChange={(e) => setVolunteerForm({...volunteerForm, skills: e.target.value})}
+                      placeholder="e.g., Academic counseling, Language skills, Technical support"
+                    />
                   </div>
-                  <button type="submit" className="form-submit">Register as Volunteer</button>
+                  
+                  <div className="form-group">
+                    <label htmlFor="volunteer-availability">Available Time</label>
+                    <input 
+                      type="text" 
+                      id="volunteer-availability" 
+                      value={volunteerForm.availability}
+                      onChange={(e) => setVolunteerForm({...volunteerForm, availability: e.target.value})}
+                      placeholder="e.g., Weekends, Evenings, 5 hours/week"
+                    />
+                  </div>
+                  
+                  <button 
+                    type="submit" 
+                    className="form-submit"
+                    disabled={submitStatus.loading && submitStatus.formType === 'volunteer'}
+                  >
+                    {submitStatus.loading && submitStatus.formType === 'volunteer' ? 'Registering...' : 'Register as Volunteer'}
+                  </button>
                 </form>
               </div>
             </div>

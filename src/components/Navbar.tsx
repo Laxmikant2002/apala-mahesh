@@ -143,7 +143,7 @@ const Navbar: React.FC = () => {
         >
           <img 
             src="/images/logo/apala-mahesh-logo.png" 
-            alt="आपला महेश" 
+            alt="Aapla Mahesh" 
             className="brand-logo-img" 
             width="120" 
             height="180" 
