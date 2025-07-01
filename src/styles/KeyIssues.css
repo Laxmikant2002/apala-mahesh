@@ -3,6 +3,8 @@
   background: #FFFFFF;
   position: relative;
   min-height: 100vh;
+  contain: layout style;
+  content-visibility: auto;
 }
 
 .key-issues-header {
@@ -226,7 +228,7 @@
 }
 
 .view-more-button {
-  background: linear-gradient(90deg, #011208, #06b6d4);
+  background: #011208;
   color: #fff;
   border: none;
   padding: 14px 36px;
@@ -234,13 +236,14 @@
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 12px #22c55e33;
-  transition: background 0.2s, transform 0.18s;
+  box-shadow: 0 2px 12px rgba(34, 197, 94, 0.2);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  will-change: transform;
 }
 
 .view-more-button:hover {
-  background: linear-gradient(90deg, #06b6d4, #0b1c11);
-  transform: translateY(-2px) scale(1.04);
+  background-color: #06b6d4;
+  transform: translateY(-1px);
 }
 
 .view-more-button:active {

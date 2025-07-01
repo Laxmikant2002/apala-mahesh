@@ -8,6 +8,8 @@ interface LazyImageProps {
   width?: string | number;
   height?: string | number;
   priority?: boolean;
+  srcSet?: string;
+  sizes?: string;
 }
 
 const FALLBACK_IMAGE = '/images/media/image-not-found.png';
@@ -18,12 +20,23 @@ const LazyImage: React.FC<LazyImageProps> = ({
   className, 
   width, 
   height,
-  priority = false 
+  priority = false,
+  srcSet,
+  sizes
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [imageSrc, setImageSrc] = useState(priority ? src : '');
   const imgRef = useRef<HTMLImageElement>(null);
+
+  // Handle src changes for priority images
+  useEffect(() => {
+    if (priority) {
+      setImageSrc(src);
+      setIsLoaded(false); // Reset loading state when src changes
+      setHasError(false); // Reset error state when src changes
+    }
+  }, [src, priority]);
 
   useEffect(() => {
     if (priority) return; // Skip intersection observer for priority images
@@ -65,6 +78,8 @@ const LazyImage: React.FC<LazyImageProps> = ({
         ref={imgRef}
         src={imageSrc || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InRyYW5zcGFyZW50Ii8+PC9zdmc+'} 
         alt={alt} 
+        srcSet={srcSet}
+        sizes={sizes}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "low"}
         width={width} 

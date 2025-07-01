@@ -21,26 +21,29 @@ const KeyIssues: React.FC = () => {
   const [showMore, setShowMore] = useState(false);
   
   const initialIssues: KeyIssue[] = [
-    {      id: 1,
-      title: "Stop Paper Leak and Ensure Timely Exam Results",
-      shortDescription: "Demand for transparent and secure examination processes",
-      fullDescription: "The increasing incidents of paper leaks and delayed results are severely impacting students' academic progress and career opportunities. We are advocating for stricter protocols and accountability.",
+    {
+      id: 1,
+      title: t('keyIssues.issues.paperLeak.title'),
+      shortDescription: t('keyIssues.issues.paperLeak.shortDescription'),
+      fullDescription: t('keyIssues.issues.paperLeak.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       learnMoreUrl: "#paper-leak",
       issueId: "stop-paper-leak"
     },
-    {      id: 2,
-      title: "Restoration of Student Union Elections",
-      shortDescription: "Advocating for democratic representation in educational institutions",
-      fullDescription: "Student unions provide essential democratic representation on campus. We're fighting to restore and strengthen these vital platforms for student voices across Maharashtra institutions.",
+    {
+      id: 2,
+      title: t('keyIssues.issues.studentUnion.title'),
+      shortDescription: t('keyIssues.issues.studentUnion.shortDescription'),
+      fullDescription: t('keyIssues.issues.studentUnion.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1494059980473-813e73ee784b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       learnMoreUrl: "#student-unions",
       issueId: "student-union-elections"
     },
-    {      id: 3,
-      title: "Academic Pressure and Mental Health",
-      shortDescription: "63.5% of students report stress due to academic pressure",
-      fullDescription: "The intense academic environment in India, driven by competitive exams, leads to anxiety and depression among students.",
+    {
+      id: 3,
+      title: t('keyIssues.issues.mentalHealth.title'),
+      shortDescription: t('keyIssues.issues.mentalHealth.shortDescription'),
+      fullDescription: t('keyIssues.issues.mentalHealth.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1560785496-3c9d27877182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
       learnMoreUrl: "#academic-pressure",
       issueId: "academic-pressure-and-mental-health"
@@ -50,53 +53,54 @@ const KeyIssues: React.FC = () => {
   const additionalIssues: KeyIssue[] = [
     {
       id: 4,
-      title: "Financial Barriers",
-      shortDescription: "Only 4% of higher education students benefit from education loans",
-      fullDescription: "Rising tuition costs and limited financial aid force many students to abandon higher education.",
+      title: t('keyIssues.issues.financial.title'),
+      shortDescription: t('keyIssues.issues.financial.shortDescription'),
+      fullDescription: t('keyIssues.issues.financial.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
       learnMoreUrl: "#financial-barriers",
       issueId: "financial-barriers"
     },
     {
       id: 5,
-      title: "Inadequate Educational Infrastructure",
-      shortDescription: "Class 10 dropout rate reached 20.6% in 2021-22",
-      fullDescription: "Overcrowded classrooms and poor infrastructure hinder effective learning and contribute to high dropout rates.",
+      title: t('keyIssues.issues.infrastructure.title'),
+      shortDescription: t('keyIssues.issues.infrastructure.shortDescription'),
+      fullDescription: t('keyIssues.issues.infrastructure.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
       learnMoreUrl: "#infrastructure-issues",
       issueId: "inadequate-educational-infrastructure"
     },
     {
       id: 6,
-      title: "Exam-related Issues",
-      shortDescription: "52% of students experience extreme stress during exams",
-      fullDescription: "The competitive exam culture in India causes significant stress, compounded by rote learning and other systemic issues.",
+      title: t('keyIssues.issues.examStress.title'),
+      shortDescription: t('keyIssues.issues.examStress.shortDescription'),
+      fullDescription: t('keyIssues.issues.examStress.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop",
       learnMoreUrl: "#exam-issues",
       issueId: "exam-related-issues"
     },
     {
       id: 7,
-      title: "College-related Issues",
-      shortDescription: "74% of first-year students feel overwhelmed by academic workload",
-      fullDescription: "College students face academic pressure, financial stress, and challenges in social and cultural adjustment.",
+      title: t('keyIssues.issues.college.title'),
+      shortDescription: t('keyIssues.issues.college.shortDescription'),
+      fullDescription: t('keyIssues.issues.college.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop",
       learnMoreUrl: "#college-issues",
       issueId: "college-related-issues"
     },
     {
       id: 8,
-      title: "Library Issues",
-      shortDescription: "Many libraries face infrastructure and funding challenges",
-      fullDescription: "Limited access to up-to-date resources and poor infrastructure in libraries hinder students' ability to study effectively.",
+      title: t('keyIssues.issues.library.title'),
+      shortDescription: t('keyIssues.issues.library.shortDescription'),
+      fullDescription: t('keyIssues.issues.library.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2030&auto=format&fit=crop",
       learnMoreUrl: "#library-issues",
       issueId: "library-issues"
-    },    {
+    },
+    {
       id: 9,
-      title: "University-related Issues",
-      shortDescription: "Administrative inefficiencies are common complaints among students",
-      fullDescription: "Bureaucratic hurdles, inadequate support systems, and poor infrastructure in universities create significant challenges.",
+      title: t('keyIssues.issues.university.title'),
+      shortDescription: t('keyIssues.issues.university.shortDescription'),
+      fullDescription: t('keyIssues.issues.university.fullDescription'),
       imageUrl: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop",
       learnMoreUrl: "#university-issues",
       issueId: "university-related-issues"
@@ -121,17 +125,17 @@ const KeyIssues: React.FC = () => {
       <motion.section 
         className="key-issues-section" 
         id="key-issues"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.3 }}
       >
         <motion.div 
           className="key-issues-header"
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
+          transition={{ duration: 0.3 }}
         >
           <h2>{t('keyIssues.title')}</h2>
           <div className="key-issues-navigation">
@@ -148,10 +152,10 @@ const KeyIssues: React.FC = () => {
             <motion.div 
               className="issue-card-wrapper" 
               key={issue.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2, delay: idx < 3 ? 0 : idx * 0.05 }}
             >
               <Link to={`/issues/${issue.issueId}`} className="issue-card-link">
                 <div className="issue-card">                <div className="issue-card-image">
@@ -179,7 +183,7 @@ const KeyIssues: React.FC = () => {
                           window.location.href = `/issues/${issue.issueId}`;
                         }}
                       >
-                        Raise Issue <span className="arrow">&#8594;</span>
+                        {t('keyIssues.raiseIssue')} <span className="arrow">&#8594;</span>
                       </button>
                     </div>
                   </div>
@@ -194,7 +198,7 @@ const KeyIssues: React.FC = () => {
             onClick={() => setShowMore(!showMore)}
             aria-expanded={showMore}
           >
-            {showMore ? 'View Less' : 'View More'}
+            {showMore ? t('keyIssues.viewLess') : t('keyIssues.viewMore')}
           </button>
         </div>
       </motion.section>
