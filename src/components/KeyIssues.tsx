@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import '../styles/KeyIssues.css'; // Main styling
 import '../styles/button-fixes.css'; // Additional button fixes for links
 import LazyImage from './LazyImage';
@@ -16,6 +17,7 @@ interface KeyIssue {
 }
 
 const KeyIssues: React.FC = () => {
+  const { t } = useTranslation();
   const [showMore, setShowMore] = useState(false);
   
   const initialIssues: KeyIssue[] = [
@@ -131,12 +133,12 @@ const KeyIssues: React.FC = () => {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          <h2>KEY ISSUES</h2>
+          <h2>{t('keyIssues.title')}</h2>
           <div className="key-issues-navigation">
-            <button className="nav-arrow prev" onClick={prevSlide} aria-label="Previous issue">
+            <button className="nav-arrow prev" onClick={prevSlide} aria-label={t('keyIssues.previousIssue')}>
               &#8592;
             </button>
-            <button className="nav-arrow next" onClick={nextSlide} aria-label="Next issue">
+            <button className="nav-arrow next" onClick={nextSlide} aria-label={t('keyIssues.nextIssue')}>
               &#8594;
             </button>
           </div>
@@ -168,7 +170,7 @@ const KeyIssues: React.FC = () => {
                           e.preventDefault();
                           window.open(issue.learnMoreUrl, '_blank');
                         }}
-                      >                        Learn More <span className="arrow">&#8594;</span>
+                      >                        {t('keyIssues.learnMore')} <span className="arrow">&#8594;</span>
                       </button>
                       <button 
                         className="raise-issue" 

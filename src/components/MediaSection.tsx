@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import '../styles/MediaSection.css';
 import LazyImage from './LazyImage';
 
 const MediaSection: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <motion.section
       id="media"
@@ -21,7 +23,7 @@ const MediaSection: React.FC = () => {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        Our Media
+        {t('media.title')}
       </motion.h2>
       <div className="media-subsections">
         {/* Photos Subsection */}
@@ -32,7 +34,7 @@ const MediaSection: React.FC = () => {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, delay: 0.15 }}
         >
-          <h3 className="subsection-title">Photos</h3>
+          <h3 className="subsection-title">{t('media.photos', 'Photos')}</h3>
           <div className="media-grid">
             {[{
               src: "/images/media/student-protest1.jpg",
@@ -70,7 +72,13 @@ const MediaSection: React.FC = () => {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
-                <LazyImage src={photo.src} alt={photo.alt} />
+                <LazyImage 
+                  src={photo.src} 
+                  alt={photo.alt} 
+                  width="400"
+                  height="300"
+                  className="media-photo"
+                />
               </motion.div>
             ))}
           </div>
@@ -83,16 +91,12 @@ const MediaSection: React.FC = () => {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, delay: 0.18 }}
         >
-          <h3 className="subsection-title">Videos</h3>
+          <h3 className="subsection-title">{t('media.videos', 'Videos')}</h3>
           <div className="media-grid">
             {[{
-              src: "https://www.youtube.com/embed/jG1UFoHgAgk",
+              src: "https://www.youtube.com/embed/CJjhiJDe_qQ",
               title: "Educational Reform Initiative",
               caption: "Our campaign for educational reform"
-            }, {
-              src: "https://www.youtube.com/embed/y_ZmM7zPLyI",
-              title: "Student Voices Documentary",
-              caption: "Student voices: Challenges and aspirations"
             }].map((video, idx) => (
               <motion.div
                 className="media-item video-item"
@@ -107,8 +111,9 @@ const MediaSection: React.FC = () => {
                     src={video.src}
                     title={video.title}
                     frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
                   ></iframe>
                 </div>
                 <div className="video-title">{video.title}</div>

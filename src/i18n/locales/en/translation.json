@@ -16,11 +16,16 @@
   },
   "keyIssues": {
     "title": "Key Issues",
-    "description": "The most pressing educational challenges we're addressing"
+    "description": "The most pressing educational challenges we're addressing",
+    "learnMore": "Learn More",
+    "previousIssue": "Previous issue",
+    "nextIssue": "Next issue"
   },
   "media": {
     "title": "Media",
-    "description": "Our impact in the news and social media"
+    "description": "Our impact in the news and social media",
+    "photos": "Photos",
+    "videos": "Videos"
   },
   "joinMovement": {
     "title": "Join the Movement",
@@ -32,11 +37,29 @@
     "name": "Your Name",
     "email": "Email Address",
     "message": "Your Message",
-    "sendButton": "Send Message"
+    "sendButton": "Send Message",
+    "address": "Our Address",
+    "emailUs": "Email Us",
+    "callUs": "Call Us"
   },
   "footer": {
     "rights": "All Rights Reserved",
-    "raiseIssue": "Raise Issue"
+    "raiseIssue": "Raise Issue",
+    "quickLinks": "Quick Links",
+    "connectWithUs": "Connect With Us",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use"
+  },
+  "issueDetail": {
+    "notFound": "Issue Not Found",
+    "notFoundMessage": "Sorry, we couldn't find the issue you're looking for.",
+    "backToIssues": "Back to Key Issues",
+    "shareExperience": "Share Your Experience",
+    "experienceDescription": "Your experience helps us better understand and address this issue.",
+    "submitReport": "Submit Report",
+    "submitting": "Submitting...",
+    "successMessage": "Thank you for sharing your experience. Your report helps us better understand and address this issue.",
+    "errorMessage": "Sorry, there was an error submitting your report. Please try again later."
   },
   "raiseIssue": {
     "title": "Raise an Issue",

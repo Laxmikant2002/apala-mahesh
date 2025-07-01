@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../styles/TopBar.css';
 
 const languages = [
@@ -8,11 +9,13 @@ const languages = [
 ];
 
 const TopBar: React.FC = () => {
-  const [selectedLang, setSelectedLang] = useState('en');
+  const { i18n } = useTranslation();
+  const [selectedLang, setSelectedLang] = useState(i18n.language || 'en');
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLang(e.target.value);
-    // Add language change logic if needed
+    const newLang = e.target.value;
+    setSelectedLang(newLang);
+    i18n.changeLanguage(newLang);
   };
 
   return (

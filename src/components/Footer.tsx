@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import '../styles/Footer.css';
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
 
   const footerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -37,21 +39,21 @@ const Footer: React.FC = () => {
       <div className="footer-content">
         <div className="footer-grid">
           <motion.div className="footer-section" variants={childVariants}>
-            <h3>Quick Links</h3>
+            <h3>{t('footer.quickLinks')}</h3>
             <nav className="footer-links" aria-label="Footer navigation">
-              <motion.a href="#hero" variants={childVariants}>Home</motion.a>
-              <motion.a href="#key-issues" variants={childVariants}>Key Issues</motion.a>
-              <motion.a href="#media" variants={childVariants}>Media</motion.a>
-              <motion.a href="#join" variants={childVariants}>Join Movement</motion.a>
-              <motion.a href="#contact" variants={childVariants}>Contact Us</motion.a>
+              <motion.a href="#hero" variants={childVariants}>{t('navbar.home')}</motion.a>
+              <motion.a href="#key-issues" variants={childVariants}>{t('navbar.keyIssues')}</motion.a>
+              <motion.a href="#media" variants={childVariants}>{t('navbar.media')}</motion.a>
+              <motion.a href="#join" variants={childVariants}>{t('navbar.joinMovement')}</motion.a>
+              <motion.a href="#contact" variants={childVariants}>{t('navbar.contactUs')}</motion.a>
               <motion.div variants={childVariants}>
-                <Link to="/raise-issue">Raise Issue</Link>
+                <Link to="/raise-issue">{t('footer.raiseIssue')}</Link>
               </motion.div>
             </nav>
           </motion.div>
 
           <motion.div className="footer-section" variants={childVariants}>
-            <h3>Connect With Us</h3>
+            <h3>{t('footer.connectWithUs')}</h3>
             <div className="social-media" aria-label="Social media links">
               <motion.a 
                 href="https://www.facebook.com/share/1DnFRqiX7s/?mibextid=wwXIfr" 
@@ -107,21 +109,21 @@ const Footer: React.FC = () => {
           className="footer-bottom"
           variants={childVariants}
         >
-          <p className="copyright">© {new Date().getFullYear()} Student Movement. All rights reserved.</p>
+          <p className="copyright">© {new Date().getFullYear()} Apla Mahesh. {t('footer.rights')}</p>
           <div className="footer-legal">
             <motion.a 
               href="/privacy" 
               whileHover={{ x: 3 }}
               whileTap={{ scale: 0.95 }}
             >
-              Privacy Policy
+              {t('footer.privacyPolicy')}
             </motion.a>
             <motion.a 
               href="/terms"
               whileHover={{ x: 3 }}
               whileTap={{ scale: 0.95 }}
             >
-              Terms of Use
+              {t('footer.termsOfUse')}
             </motion.a>
           </div>
         </motion.div>

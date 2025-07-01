@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import '../styles/ContactUs.css';
 
 const ContactUs: React.FC = () => {
+  const { t } = useTranslation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [formMessage, setFormMessage] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [formSuccess, setFormSuccess] = useState<boolean>(false);
 
   return (
@@ -22,7 +26,7 @@ const ContactUs: React.FC = () => {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        Contact Us
+        {t('contactUs.title')}
       </motion.h2>
       <div className="contact-container">
         <motion.div
@@ -34,15 +38,15 @@ const ContactUs: React.FC = () => {
         >
           {[{
             icon: 'fas fa-map-marker-alt',
-            title: 'Our Address',
+            title: t('contactUs.address'),
             text: (<p>Congress Bhavan, Gaothan,<br />Shivajinagar, Pune,<br />Maharashtra 411005</p>)
           }, {
             icon: 'fas fa-envelope',
-            title: 'Email Us',
+            title: t('contactUs.emailUs'),
             text: (<p>nsuimahaforyou@gmail.com</p>)
           }, {
             icon: 'fas fa-phone-alt',
-            title: 'Call Us',
+            title: t('contactUs.callUs'),
             text: (<p>+91 87670 14943<br />+91 89992 33209</p>)
           }].map((card, idx) => (
             <motion.div

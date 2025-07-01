@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import '../styles/IssueDetail.css'; // Assuming you have a CSS file for styling
 
 // Interface for issue data
@@ -12,6 +13,16 @@ interface IssueDetailData {
 
 // Map of issue IDs to their details
 const issueDetails: Record<string, IssueDetailData> = {
+  'stop-paper-leak': {
+    title: 'Stop Paper Leak and Ensure Timely Exam Results',
+    description: 'The increasing incidents of paper leaks and delayed results are severely impacting students\' academic progress and career opportunities. We are advocating for stricter protocols, enhanced security measures, and accountability from examination boards. Recent incidents have affected millions of students, causing delays in admissions and career planning. We demand transparent investigation processes, immediate corrective measures, and compensation for affected students.',
+    imageSrc: 'https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+  },
+  'student-union-elections': {
+    title: 'Restoration of Student Union Elections',
+    description: 'Student unions provide essential democratic representation on campus, giving students a voice in academic policies, campus facilities, and student welfare matters. We are fighting to restore and strengthen these vital platforms for student voices across Maharashtra institutions. Student unions play a crucial role in addressing grievances, organizing cultural events, and ensuring students\' rights are protected. The democratic process helps students develop leadership skills and civic responsibility.',
+    imageSrc: 'https://images.unsplash.com/photo-1494059980473-813e73ee784b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+  },
   'academic-pressure-and-mental-health': {
     title: 'Academic Pressure and Mental Health',
     description: 'The intense academic environment in India, driven by competitive exams like JEE and NEET, places significant stress on students. Studies show that over 63.5% of high school students report stress due to academic pressure, with more than 12,500 student suicides linked to academic stress annually.',
@@ -50,6 +61,7 @@ const issueDetails: Record<string, IssueDetailData> = {
 };
 
 const IssueDetail: React.FC = () => {
+  const { t } = useTranslation();
   const { issueId } = useParams<{ issueId: string }>();
   
   const [name, setName] = useState('');
@@ -84,10 +96,10 @@ const IssueDetail: React.FC = () => {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <h2>Issue Not Found</h2>
-          <p>Sorry, we couldn't find the issue you're looking for.</p>
+          <h2>{t('issueDetail.notFound')}</h2>
+          <p>{t('issueDetail.notFoundMessage')}</p>
           <motion.div whileHover={{ x: -5 }}>
-            <Link to="/" className="back-link">Back to Key Issues</Link>
+            <Link to="/" className="back-link">{t('issueDetail.backToIssues')}</Link>
           </motion.div>
         </motion.div>
       </motion.div>
@@ -330,7 +342,7 @@ const IssueDetail: React.FC = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {isSubmitting ? 'Submitting...' : 'Submit Report'}
+                {isSubmitting ? t('issueDetail.submitting') : t('issueDetail.submitReport')}
               </motion.button>
             </motion.div>
           </motion.form>
