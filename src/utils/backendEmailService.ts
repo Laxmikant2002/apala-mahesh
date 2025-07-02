@@ -1,6 +1,9 @@
-// Email service for client-side React application
-// Note: For security reasons, Mailgun API should be called from backend
-// This is a frontend implementation that would typically call a backend API
+// Backend email service using Mailgun
+// This file should be used in a Node.js backend/server environment
+// Based on the Mailgun example provided
+
+import FormData from "form-data"; // form-data v4.0.1
+import Mailgun from "mailgun.js"; // mailgun.js v11.1.0
 
 export interface EmailData {
   name: string;
@@ -11,45 +14,82 @@ export interface EmailData {
   additionalData?: any;
 }
 
-export class EmailService {
+export class BackendEmailService {
+  private mg: any;
   private domain: string;
+  private apiKey: string;
   private recipientEmail: string;
 
   constructor() {
-    // In a React app, use process.env for environment variables at build time
-    this.domain = process.env.REACT_APP_MAILGUN_DOMAIN || '';
-    this.recipientEmail = process.env.REACT_APP_RECIPIENT_EMAIL || '';
+    this.domain = process.env.REACT_APP_MAILGUN_DOMAIN || process.env.MAILGUN_DOMAIN || 'sandboxec4aa7eb6c304457a308afce4514bcf1.mailgun.org';
+    this.apiKey = process.env.REACT_APP_MAILGUN_API_KEY || process.env.MAILGUN_API_KEY || process.env.API_KEY || '';
+    this.recipientEmail = process.env.REACT_APP_RECIPIENT_EMAIL || process.env.RECIPIENT_EMAIL || 'nilangekarmahi1@gmail.com';
+    
+    // Initialize Mailgun client
+    const mailgun = new Mailgun(FormData);
+    this.mg = mailgun.client({
+      username: "api",
+      key: this.apiKey,
+      // When you have an EU-domain, you must specify the endpoint:
+      // url: "https://api.eu.mailgun.net"
+    });
   }
 
-  async sendEmail(emailData: EmailData): Promise<{ success: boolean; message: string }> {
+  async sendSimpleMessage(): Promise<{ success: boolean; message: string; data?: any }> {
     try {
-      // In a production app, this should call your backend API
-      // For now, we'll simulate the email sending
-      console.log('Sending email with data:', emailData);
-      
-      const emailContent = this.generateEmailContent(emailData);
-      console.log('Generated email content:', emailContent);
-      
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // In production, replace this with actual API call to your backend
-      // Example:
-      // const response = await fetch('/api/send-email', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ emailData, emailContent })
-      // });
-      
+      const data = await this.mg.messages.create(this.domain, {
+        from: `Mailgun Sandbox <postmaster@${this.domain}>`,
+        to: ["Mahesh kamble <nilangekarmahi1@gmail.com>"],
+        subject: "Hello Mahesh kamble",
+        text: "Congratulations Mahesh kamble, you just sent an email with Mailgun! You are truly awesome!",
+      });
+
+      console.log(data); // logs response data
       return {
         success: true,
-        message: 'Email sent successfully!'
+        message: 'Test email sent successfully!',
+        data
+      };
+    } catch (error) {
+      console.log(error); //logs any error
+      return {
+        success: false,
+        message: 'Failed to send test email.',
+        data: error
+      };
+    }
+  }
+
+  async sendEmail(emailData: EmailData): Promise<{ success: boolean; message: string; data?: any }> {
+    try {
+      if (!this.apiKey) {
+        throw new Error('Mailgun API key not configured. Please check your environment variables.');
+      }
+
+      const emailContent = this.generateEmailContent(emailData);
+      
+      const messageData = {
+        from: `Aapla Mahesh <noreply@${this.domain}>`,
+        to: this.recipientEmail,
+        subject: emailContent.subject,
+        html: emailContent.html,
+        text: emailContent.text
+      };
+
+      const data = await this.mg.messages.create(this.domain, messageData);
+      
+      console.log('Email sent successfully:', data);
+      return {
+        success: true,
+        message: 'Email sent successfully!',
+        data
       };
     } catch (error) {
       console.error('Error sending email:', error);
       return {
         success: false,
-        message: 'Failed to send email. Please try again later.'
+        message: 'Failed to send email. Please try again later.',
+        data: error
       };
     }
   }
@@ -149,13 +189,13 @@ export class EmailService {
     };
   }
 
-  // Test email function
-  async sendTestEmail(): Promise<{ success: boolean; message: string }> {
+  // Test email function similar to your provided example
+  async sendTestEmail(): Promise<{ success: boolean; message: string; data?: any }> {
     const testData: EmailData = {
-      name: 'Test User',
-      email: 'test@example.com',
+      name: 'Mahesh Kamble',
+      email: 'nilangekarmahi1@gmail.com',
       subject: 'Test Email from Aapla Mahesh',
-      message: 'This is a test email to verify that the email service is working correctly.',
+      message: 'This is a test email to verify that the email service is working correctly with Mailgun!',
       formType: 'contact'
     };
 
@@ -163,5 +203,10 @@ export class EmailService {
   }
 }
 
-// Create a singleton instance
-export const emailService = new EmailService();
+// Create a singleton instance for backend use
+export const backendEmailService = new BackendEmailService();
+
+// Example usage function based on your provided code
+export async function sendSimpleMessage() {
+  return await backendEmailService.sendSimpleMessage();
+}
