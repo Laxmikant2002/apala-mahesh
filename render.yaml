@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: aapla-mahesh-website
+    env: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npx serve -s build -l 10000
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REACT_APP_MAILGUN_DOMAIN
+        fromService:
+          type: web
+          name: aapla-mahesh-website
+          envVarKey: REACT_APP_MAILGUN_DOMAIN
+      - key: REACT_APP_MAILGUN_API_KEY
+        fromService:
+          type: web
+          name: aapla-mahesh-website
+          envVarKey: REACT_APP_MAILGUN_API_KEY
+      - key: REACT_APP_RECIPIENT_EMAIL
+        fromService:
+          type: web
+          name: aapla-mahesh-website
+          envVarKey: REACT_APP_RECIPIENT_EMAIL
+    autoDeploy: true
+    branch: main

@@ -6,7 +6,6 @@ import './styles/loading.css';
 // Critical components loaded immediately
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import EmailTest from './components/EmailTest';
 
 // Lazy load less critical components
 const KeyIssues = lazy(() => import('./components/KeyIssues'));
@@ -49,8 +48,6 @@ function App() {  return (
             <Footer />
           </Suspense>
         </Suspense>
-        {/* Email Test Component - Remove in production */}
-        <EmailTest />
       </div>
     </Router>
   );

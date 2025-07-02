@@ -22,4 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# deployment
 .vercel
+.render
+
+# environment files (important - never commit .env to git)
+.env
