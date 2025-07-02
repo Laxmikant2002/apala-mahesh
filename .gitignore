@@ -26,5 +26,3 @@ yarn-error.log*
 .vercel
 .render
 
-# environment files (important - never commit .env to git)
-.env
