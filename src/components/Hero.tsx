@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import LazyImage from './LazyImage';
 import '../styles/Hero.css';
 
 const Hero: React.FC = () => {
@@ -9,17 +8,7 @@ const Hero: React.FC = () => {
 
   return (
     <section className="hero-container" id="hero" aria-label="Hero section">
-      <div className="hero-background">
-        <picture>
-          <source srcSet="/images/hero-background-1.jpg" media="(max-width: 768px)" />
-          <LazyImage
-            src="/images/hero-background.jpg"
-            alt="Education for all - Hero background"
-            priority={true}
-            className="hero-bg-image"
-          />
-        </picture>
-      </div>
+      <div className="hero-background"></div>
       <div className="overlay" aria-hidden="true"></div>
       <div className="hero-content">
         <h1>{t('hero.title')}</h1>
