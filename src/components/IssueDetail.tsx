@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { emailService } from '../utils/emailService';
 import '../styles/IssueDetail.css'; // Assuming you have a CSS file for styling
 
 // Interface for issue data
@@ -133,31 +134,42 @@ const IssueDetail: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      console.log('Submitting issue:', {
-        issueType: issue.title,
+      // Send email using the email service
+      const result = await emailService.sendEmail({
         name,
         email,
-        instituteName,
-        description,
-        location
+        subject: issue.title,
+        message: description,
+        formType: 'issue',
+        additionalData: {
+          instituteName,
+          location,
+          issueType: issue.title
+        }
       });
       
-      setSubmitStatus({
-        submitted: true,
-        success: true,
-        message: 'Thank you for reporting this issue. We will review it and take appropriate action.'
-      });
-      
-      // Reset form
-      setName('');
-      setEmail('');
-      setInstituteName('');
-      setDescription('');
-      setLocation('');
+      if (result.success) {
+        setSubmitStatus({
+          submitted: true,
+          success: true,
+          message: 'Thank you for reporting this issue. We will review it and take appropriate action.'
+        });
+        
+        // Reset form
+        setName('');
+        setEmail('');
+        setInstituteName('');
+        setDescription('');
+        setLocation('');
+      } else {
+        setSubmitStatus({
+          submitted: true,
+          success: false,
+          message: result.message || 'Failed to submit the report. Please try again later.'
+        });
+      }
     } catch (error) {
+      console.error('Email submission error:', error);
       setSubmitStatus({
         submitted: true,
         success: false,

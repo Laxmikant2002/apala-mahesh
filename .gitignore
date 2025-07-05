@@ -13,11 +13,15 @@
 
 # misc
 .DS_Store
+
+# environment variables (NEVER commit these!)
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.backup
+.env.*.local
 
 # logs
 npm-debug.log*
@@ -70,3 +74,15 @@ ehthumbs.db
 *.tmp
 *.temp
 
+# test files (should not be committed)
+test-forms.js
+test-email.js
+test-*.js
+
+# backup files
+*.backup
+*.bak
+
+# local development files
+.local
+local.*
