@@ -45,7 +45,7 @@ REACT_APP_RECIPIENT_EMAIL=nsuimahaforyou@gmail.com
 REACT_APP_SENDER_NAME=Aapla Mahesh Team
 REACT_APP_SENDER_EMAIL=contact@aaplamahesh.org
 
-# ✅ Your Brevo API key (already added!)
+# ✅ Your Brevo API key (get from: https://app.brevo.com/settings/keys/api)
 REACT_APP_BREVO_API_KEY=your_brevo_api_key_here
 ```
 
