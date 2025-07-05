@@ -1,6 +1,7 @@
 // Email service for client-side React application
-// Note: For security reasons, Mailgun API should be called from backend
-// This is a frontend implementation that would typically call a backend API
+// This now integrates with the unified email service for better functionality
+
+import { unifiedEmailService, EmailResult } from './unifiedEmailService';
 
 export interface EmailData {
   name: string;
@@ -12,38 +13,21 @@ export interface EmailData {
 }
 
 export class EmailService {
-  private domain: string;
   private recipientEmail: string;
 
   constructor() {
     // In a React app, use process.env for environment variables at build time
-    this.domain = process.env.REACT_APP_MAILGUN_DOMAIN || '';
     this.recipientEmail = process.env.REACT_APP_RECIPIENT_EMAIL || '';
   }
 
   async sendEmail(emailData: EmailData): Promise<{ success: boolean; message: string }> {
     try {
-      // In a production app, this should call your backend API
-      // For now, we'll simulate the email sending
-      console.log('Sending email with data:', emailData);
-      
-      const emailContent = this.generateEmailContent(emailData);
-      console.log('Generated email content:', emailContent);
-      
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // In production, replace this with actual API call to your backend
-      // Example:
-      // const response = await fetch('/api/send-email', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ emailData, emailContent })
-      // });
+      // Use the unified email service for better functionality
+      const result: EmailResult = await unifiedEmailService.sendFormEmail(emailData);
       
       return {
-        success: true,
-        message: 'Email sent successfully!'
+        success: result.success,
+        message: result.message
       };
     } catch (error) {
       console.error('Error sending email:', error);
@@ -52,101 +36,6 @@ export class EmailService {
         message: 'Failed to send email. Please try again later.'
       };
     }
-  }
-
-  private generateEmailContent(emailData: EmailData): { subject: string; html: string; text: string } {
-    const { name, email, subject, message, formType, additionalData } = emailData;
-    
-    let emailSubject = '';
-    let emailBody = '';
-    
-    switch (formType) {
-      case 'issue':
-        emailSubject = `🚨 New Issue Reported: ${subject}`;
-        emailBody = `
-          <h2>New Issue Report from Aapla Mahesh Website</h2>
-          <p><strong>Reporter:</strong> ${name} (${email})</p>
-          <p><strong>Issue Title:</strong> ${subject}</p>
-          <p><strong>Institute:</strong> ${additionalData?.instituteName || 'Not specified'}</p>
-          <p><strong>Location:</strong> ${additionalData?.location || 'Not specified'}</p>
-          <p><strong>Description:</strong></p>
-          <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
-            ${message.replace(/\n/g, '<br>')}
-          </div>
-          <hr>
-          <p><small>This email was sent from the Aapla Mahesh website contact form.</small></p>
-        `;
-        break;
-        
-      case 'join':
-        emailSubject = `👥 New Team Application: ${name}`;
-        emailBody = `
-          <h2>New Team Application from Aapla Mahesh Website</h2>
-          <p><strong>Applicant:</strong> ${name} (${email})</p>
-          <p><strong>Position:</strong> ${additionalData?.position || 'Not specified'}</p>
-          <p><strong>Skills:</strong> ${additionalData?.skills || 'Not specified'}</p>
-          <p><strong>Experience:</strong> ${additionalData?.experience || 'Not specified'}</p>
-          <p><strong>Message:</strong></p>
-          <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
-            ${message.replace(/\n/g, '<br>')}
-          </div>
-          <hr>
-          <p><small>This email was sent from the Aapla Mahesh website join form.</small></p>
-        `;
-        break;
-        
-      case 'volunteer':
-        emailSubject = `🤝 New Volunteer Application: ${name}`;
-        emailBody = `
-          <h2>New Volunteer Application from Aapla Mahesh Website</h2>
-          <p><strong>Volunteer:</strong> ${name} (${email})</p>
-          <p><strong>University/College:</strong> ${additionalData?.university || 'Not specified'}</p>
-          <p><strong>Available Time:</strong> ${additionalData?.availability || 'Not specified'}</p>
-          <p><strong>Skills:</strong> ${additionalData?.skills || 'Not specified'}</p>
-          <p><strong>Message:</strong></p>
-          <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
-            ${message.replace(/\n/g, '<br>')}
-          </div>
-          <hr>
-          <p><small>This email was sent from the Aapla Mahesh website volunteer form.</small></p>
-        `;
-        break;
-        
-      case 'contact':
-        emailSubject = `📧 Contact Form: ${subject}`;
-        emailBody = `
-          <h2>New Contact Form Submission from Aapla Mahesh Website</h2>
-          <p><strong>Name:</strong> ${name} (${email})</p>
-          <p><strong>Subject:</strong> ${subject}</p>
-          <p><strong>Message:</strong></p>
-          <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
-            ${message.replace(/\n/g, '<br>')}
-          </div>
-          <hr>
-          <p><small>This email was sent from the Aapla Mahesh website contact form.</small></p>
-        `;
-        break;
-        
-      default:
-        emailSubject = `New Form Submission: ${subject}`;
-        emailBody = `
-          <h2>New Form Submission from Aapla Mahesh Website</h2>
-          <p><strong>Name:</strong> ${name} (${email})</p>
-          <p><strong>Subject:</strong> ${subject}</p>
-          <p><strong>Message:</strong></p>
-          <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
-            ${message.replace(/\n/g, '<br>')}
-          </div>
-        `;
-    }
-
-    const textVersion = emailBody.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ');
-
-    return {
-      subject: emailSubject,
-      html: emailBody,
-      text: textVersion
-    };
   }
 
   // Test email function
@@ -160,6 +49,43 @@ export class EmailService {
     };
 
     return await this.sendEmail(testData);
+  }
+
+  // Check email service status
+  async getServiceStatus(): Promise<{
+    configured: boolean;
+    activeProvider: string;
+    features: string[];
+  }> {
+    try {
+      const status = unifiedEmailService.getProviderStatus();
+      return {
+        configured: status.brevo.configured || status.nodemailer.configured,
+        activeProvider: status.active,
+        features: status.active === 'brevo' ? status.brevo.features : status.nodemailer.features
+      };
+    } catch (error) {
+      return {
+        configured: false,
+        activeProvider: 'none',
+        features: []
+      };
+    }
+  }
+
+  // Test all email providers
+  async testAllProviders(): Promise<{
+    brevo: { success: boolean; message: string };
+    nodemailer: { success: boolean; message: string };
+  }> {
+    try {
+      return await unifiedEmailService.testEmailSetup();
+    } catch (error) {
+      return {
+        brevo: { success: false, message: 'Test failed' },
+        nodemailer: { success: false, message: 'Test failed' }
+      };
+    }
   }
 }
 

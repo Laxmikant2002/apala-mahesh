@@ -7,7 +7,7 @@ This guide will help you deploy your Aapla Mahesh website to Render.com with aut
 1. ✅ Git repository (already set up)
 2. ✅ GitHub account with your repository
 3. ✅ Render.com account (free tier available)
-4. ✅ Mailgun account and API credentials
+4. ✅ Email service credentials (Gmail, Brevo, etc.)
 
 ## 🔧 Deployment Files Created
 
@@ -65,10 +65,24 @@ In Render dashboard, add these environment variables:
 
 #### Required Environment Variables:
 ```
-REACT_APP_MAILGUN_DOMAIN=sandboxec4aa7eb6c304457a308afce4514bcf1.mailgun.org
-REACT_APP_MAILGUN_API_KEY=94c46a47a62cd28cf0314361ce289dc1-6d5bd527-8fd6d66e
-REACT_APP_RECIPIENT_EMAIL=nsuimahaforyou@gmail.com
+REACT_APP_RECIPIENT_EMAIL=your-admin@example.com
+REACT_APP_SENDER_NAME=Aapla Mahesh Team
+REACT_APP_SENDER_EMAIL=contact@aaplamahesh.org
 NODE_ENV=production
+```
+
+#### Optional Email Provider Variables:
+```
+# For Brevo (mass campaigns)
+REACT_APP_BREVO_API_KEY=your_brevo_api_key
+
+# For Gmail SMTP
+REACT_APP_GMAIL_USER=your_gmail@gmail.com
+REACT_APP_GMAIL_APP_PASSWORD=your_gmail_app_password
+
+# For Outlook SMTP
+REACT_APP_OUTLOOK_USER=your_outlook@outlook.com
+REACT_APP_OUTLOOK_PASSWORD=your_outlook_app_password
 ```
 
 ⚠️ **Security Note**: Never commit your actual API keys to git. Always set them in Render's environment variables.
@@ -145,7 +159,7 @@ Error: npm install failed
 
 #### 2. Environment Variables Not Working
 ```
-Error: process.env.REACT_APP_MAILGUN_API_KEY is undefined
+Error: process.env.REACT_APP_BREVO_API_KEY is undefined
 ```
 **Solution**: Set environment variables in Render dashboard
 
@@ -155,7 +169,7 @@ Error: process.env.REACT_APP_MAILGUN_API_KEY is undefined
 #### 4. Email Forms Not Working
 **Solution**: 
 - Check environment variables are set
-- Verify Mailgun domain authorization
+- Verify email service credentials (Gmail app password, Brevo API key)
 - Check browser console for errors
 
 ### Debug Steps:

@@ -9,20 +9,35 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: REACT_APP_MAILGUN_DOMAIN
-        fromService:
-          type: web
-          name: aapla-mahesh-website
-          envVarKey: REACT_APP_MAILGUN_DOMAIN
-      - key: REACT_APP_MAILGUN_API_KEY
-        fromService:
-          type: web
-          name: aapla-mahesh-website
-          envVarKey: REACT_APP_MAILGUN_API_KEY
       - key: REACT_APP_RECIPIENT_EMAIL
         fromService:
           type: web
           name: aapla-mahesh-website
           envVarKey: REACT_APP_RECIPIENT_EMAIL
+      - key: REACT_APP_SENDER_NAME
+        fromService:
+          type: web
+          name: aapla-mahesh-website
+          envVarKey: REACT_APP_SENDER_NAME
+      - key: REACT_APP_SENDER_EMAIL
+        fromService:
+          type: web
+          name: aapla-mahesh-website
+          envVarKey: REACT_APP_SENDER_EMAIL
+      - key: REACT_APP_BREVO_API_KEY
+        fromService:
+          type: web
+          name: aapla-mahesh-website
+          envVarKey: REACT_APP_BREVO_API_KEY
+      - key: REACT_APP_GMAIL_USER
+        fromService:
+          type: web
+          name: aapla-mahesh-website
+          envVarKey: REACT_APP_GMAIL_USER
+      - key: REACT_APP_GMAIL_APP_PASSWORD
+        fromService:
+          type: web
+          name: aapla-mahesh-website
+          envVarKey: REACT_APP_GMAIL_APP_PASSWORD
     autoDeploy: true
     branch: main
