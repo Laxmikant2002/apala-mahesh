@@ -11,6 +11,9 @@
   color: #111111;
   outline: none;
   transition: all 0.3s ease-in-out;
+  pointer-events: auto !important;
+  z-index: 10;
+  position: relative;
 }
 
 .learn-more-button:focus,
@@ -19,8 +22,51 @@
   color: #000000;
 }
 
+/* Enhanced button fixes for raise-issue buttons */
+.raise-issue {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  z-index: 10 !important;
+  position: relative !important;
+  background: #000000 !important;
+  border: none !important;
+  color: white !important;
+  padding: 8px 16px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.raise-issue:hover {
+  background: #333 !important;
+  transform: translateY(-1px) !important;
+}
+
+.raise-issue:active {
+  transform: translateY(0) !important;
+}
+
 /* Fix for any nested button clicks */
-.issue-card-link .issue-card-footer button {
-  cursor: pointer;
-  pointer-events: auto;
+.issue-card-link .issue-card-footer button,
+.issue-card .issue-card-footer button,
+.issue-card-footer button {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  z-index: 10 !important;
+}
+
+/* Prevent card link from interfering with buttons */
+.issue-card-footer {
+  z-index: 5;
+  position: relative;
+}
+
+.issue-card-actions {
+  z-index: 10;
+  position: relative;
+}
+
+/* Debug style to make buttons visible */
+button[data-issue-id] {
+  border: 2px solid red !important; /* Temporary debug border */
 }

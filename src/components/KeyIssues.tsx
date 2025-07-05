@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import '../styles/KeyIssues.css'; // Main styling
 import '../styles/button-fixes.css'; // Additional button fixes for links
 import LazyImage from './LazyImage';
@@ -18,15 +18,61 @@ interface KeyIssue {
 
 const KeyIssues: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [showMore, setShowMore] = useState(false);
   
-  const initialIssues: KeyIssue[] = [
+  // Detect if running in production/Vercel for performance optimizations
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  // Handle navigation to raise issue page - Mobile-optimized with React Router
+  const handleRaiseIssue = useCallback((issueId: string, e: React.MouseEvent) => {
+    console.log('🔄 Raise Issue clicked for:', issueId);
+    
+    // Prevent any default behaviors
+    e.preventDefault();
+    e.stopPropagation();
+    
+    try {
+      // Show immediate feedback
+      const button = e.currentTarget as HTMLButtonElement;
+      const originalText = button.innerHTML;
+      button.innerHTML = '🔄 Loading...';
+      button.disabled = true;
+      
+      // Navigate to the raise issue page
+      const targetPath = '/raise-issue';
+      console.log('🚀 Navigating to:', targetPath);
+      
+      // Use React Router navigate for smooth client-side routing
+      navigate(targetPath);
+      
+      // Reset button after navigation starts
+      setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }, 500);
+      
+    } catch (error) {
+      console.error('❌ Navigation error:', error);
+      // Fallback to direct navigation if React Router fails
+      window.location.href = '/raise-issue';
+    }
+  }, [navigate]);
+
+  // Handle learn more external links
+  const handleLearnMore = useCallback((url: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }, []);
+  
+  const initialIssues: KeyIssue[] = useMemo(() => [
     {
       id: 1,
       title: t('keyIssues.issues.paperLeak.title'),
       shortDescription: t('keyIssues.issues.paperLeak.shortDescription'),
       fullDescription: t('keyIssues.issues.paperLeak.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      imageUrl: "/images/media/student-protest1.jpg",
       learnMoreUrl: "#paper-leak",
       issueId: "stop-paper-leak"
     },
@@ -35,7 +81,7 @@ const KeyIssues: React.FC = () => {
       title: t('keyIssues.issues.studentUnion.title'),
       shortDescription: t('keyIssues.issues.studentUnion.shortDescription'),
       fullDescription: t('keyIssues.issues.studentUnion.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1494059980473-813e73ee784b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      imageUrl: "/images/media/student-protest2.jpg",
       learnMoreUrl: "#student-unions",
       issueId: "student-union-elections"
     },
@@ -44,19 +90,19 @@ const KeyIssues: React.FC = () => {
       title: t('keyIssues.issues.mentalHealth.title'),
       shortDescription: t('keyIssues.issues.mentalHealth.shortDescription'),
       fullDescription: t('keyIssues.issues.mentalHealth.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1560785496-3c9d27877182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+      imageUrl: "/images/media/student-protest3.jpg",
       learnMoreUrl: "#academic-pressure",
       issueId: "academic-pressure-and-mental-health"
     },
-  ];
+  ], [t]);
   
-  const additionalIssues: KeyIssue[] = [
+  const additionalIssues: KeyIssue[] = useMemo(() => [
     {
       id: 4,
       title: t('keyIssues.issues.financial.title'),
       shortDescription: t('keyIssues.issues.financial.shortDescription'),
       fullDescription: t('keyIssues.issues.financial.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
+      imageUrl: "/images/media/student-protest4.jpg",
       learnMoreUrl: "#financial-barriers",
       issueId: "financial-barriers"
     },
@@ -65,7 +111,7 @@ const KeyIssues: React.FC = () => {
       title: t('keyIssues.issues.infrastructure.title'),
       shortDescription: t('keyIssues.issues.infrastructure.shortDescription'),
       fullDescription: t('keyIssues.issues.infrastructure.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
+      imageUrl: "/images/media/student-protest5.jpg",
       learnMoreUrl: "#infrastructure-issues",
       issueId: "inadequate-educational-infrastructure"
     },
@@ -74,7 +120,7 @@ const KeyIssues: React.FC = () => {
       title: t('keyIssues.issues.examStress.title'),
       shortDescription: t('keyIssues.issues.examStress.shortDescription'),
       fullDescription: t('keyIssues.issues.examStress.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop",
+      imageUrl: "/images/media/student-protest6.jpg",
       learnMoreUrl: "#exam-issues",
       issueId: "exam-related-issues"
     },
@@ -83,7 +129,7 @@ const KeyIssues: React.FC = () => {
       title: t('keyIssues.issues.college.title'),
       shortDescription: t('keyIssues.issues.college.shortDescription'),
       fullDescription: t('keyIssues.issues.college.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop",
+      imageUrl: "/images/media/student-protest7.jpg",
       learnMoreUrl: "#college-issues",
       issueId: "college-related-issues"
     },
@@ -92,7 +138,7 @@ const KeyIssues: React.FC = () => {
       title: t('keyIssues.issues.library.title'),
       shortDescription: t('keyIssues.issues.library.shortDescription'),
       fullDescription: t('keyIssues.issues.library.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2030&auto=format&fit=crop",
+      imageUrl: "/images/media/student-protest8.jpg",
       learnMoreUrl: "#library-issues",
       issueId: "library-issues"
     },
@@ -101,14 +147,17 @@ const KeyIssues: React.FC = () => {
       title: t('keyIssues.issues.university.title'),
       shortDescription: t('keyIssues.issues.university.shortDescription'),
       fullDescription: t('keyIssues.issues.university.fullDescription'),
-      imageUrl: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop",
+      imageUrl: "/images/media/student-protest9.jpg",
       learnMoreUrl: "#university-issues",
       issueId: "university-related-issues"
     }
-  ];
+  ], [t]);
   
   // Combine issues based on showMore state
-  const keyIssues = showMore ? [...initialIssues, ...additionalIssues] : initialIssues;
+  const keyIssues = useMemo(() => 
+    showMore ? [...initialIssues, ...additionalIssues] : initialIssues,
+    [showMore, initialIssues, additionalIssues]
+  );
   // Placeholder functions for navigation (to be implemented with a carousel library if needed)
   const nextSlide = () => {
     // Placeholder for next slide functionality
@@ -128,13 +177,13 @@ const KeyIssues: React.FC = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.5 }}
       >
         <motion.div 
           className="key-issues-header"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.3 }}
         >
           <h2>{t('keyIssues.title')}</h2>
@@ -152,43 +201,48 @@ const KeyIssues: React.FC = () => {
             <motion.div 
               className="issue-card-wrapper" 
               key={issue.id}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={isProduction ? false : { opacity: 0 }}
+              whileInView={isProduction ? {} : { opacity: 1 }}
               viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.2, delay: idx < 3 ? 0 : idx * 0.05 }}
+              transition={isProduction ? {} : { 
+                duration: 0.2, 
+                delay: idx < 3 ? idx * 0.05 : 0
+              }}
             >
-              <Link to={`/issues/${issue.issueId}`} className="issue-card-link">
-                <div className="issue-card">                <div className="issue-card-image">
-                    <LazyImage src={issue.imageUrl} alt={issue.title} width={400} height={300} />
-                    <div className="issue-overlay">
-                      <h3>{issue.title}</h3>
-                      <p>{issue.shortDescription}</p>
-                    </div>
-                  </div>                <div className="issue-card-footer">
-                    <p>{issue.fullDescription}</p>
-                    <div className="issue-card-actions">
-                      <button 
-                        className="learn-more-button" 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          window.open(issue.learnMoreUrl, '_blank');
-                        }}
-                      >                        {t('keyIssues.learnMore')} <span className="arrow">&#8594;</span>
-                      </button>
-                      <button 
-                        className="raise-issue" 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.location.href = `/issues/${issue.issueId}`;
-                        }}
-                      >
-                        {t('keyIssues.raiseIssue')} <span className="arrow">&#8594;</span>
-                      </button>
-                    </div>
+              <div className="issue-card">
+                <div className="issue-card-image">
+                  <LazyImage 
+                    src={issue.imageUrl} 
+                    alt={issue.title} 
+                    width={400} 
+                    height={300}
+                  />
+                  <div className="issue-overlay">
+                    <h3>{issue.title}</h3>
+                    <p>{issue.shortDescription}</p>
                   </div>
                 </div>
-              </Link>
+                <div className="issue-card-footer">
+                  <p>{issue.fullDescription}</p>
+                  <div className="issue-card-actions">
+                    <button 
+                      className="learn-more-button" 
+                      onClick={(e) => handleLearnMore(issue.learnMoreUrl, e)}
+                      type="button"
+                    >
+                      {t('keyIssues.learnMore')} <span className="arrow">&#8594;</span>
+                    </button>
+                    <button 
+                      className="raise-issue" 
+                      onClick={(e) => handleRaiseIssue(issue.issueId, e)}
+                      type="button"
+                      data-issue-id={issue.issueId}
+                    >
+                      {t('keyIssues.raiseIssue')} <span className="arrow">&#8594;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -206,4 +260,4 @@ const KeyIssues: React.FC = () => {
   );
 };
 
-export default KeyIssues;
+export default React.memo(KeyIssues);

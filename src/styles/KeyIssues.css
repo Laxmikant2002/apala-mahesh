@@ -66,6 +66,8 @@
   opacity: 0;
   transform: translateY(30px);
   animation: card-fade-in-up 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+  content-visibility: auto;
+  contain-intrinsic-size: 370px 400px;
 }
 
 @keyframes card-fade-in-up {
@@ -257,6 +259,7 @@
   }
 }
 
+/* Mobile-specific button optimizations */
 @media (max-width: 768px) {
   .issue-card {
     width: 100%;
@@ -275,6 +278,150 @@
   }
   .key-issues-section {
     padding: 40px 0 30px 0;
+    min-height: auto; /* Remove fixed height on mobile */
+  }
+
+  .key-issues-header {
+    padding: 0 16px;
+    margin-bottom: 24px;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .key-issues-header h2 {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  .key-issues-container {
+    padding: 0 16px;
+    gap: 16px;
+  }
+
+  /* MOBILE BUTTON FIXES */
+  .raise-issue, .learn-more-button {
+    min-height: 48px !important; /* Larger touch target */
+    min-width: 120px !important;
+    padding: 12px 16px !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.1) !important;
+    touch-action: manipulation !important;
+    user-select: none !important;
+  }
+  
+  /* Remove all complex effects on mobile */
+  .raise-issue:active, .learn-more-button:active {
+    background-color: #333 !important;
+    transform: scale(0.95) !important;
+    transition: all 0.1s ease !important;
+  }
+  
+  /* Disable animations on mobile for better performance */
+  .issue-card {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .issue-card:hover {
+    transform: none !important;
+  }
+
+  /* Optimize images for mobile */
+  .issue-image {
+    height: 160px; /* Reduce image height on mobile */
+  }
+
+  .nav-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  /* Reduce button effects on mobile */
+  .learn-more-button, .raise-issue {
+    transition: background-color 0.1s ease;
+  }
+
+  .learn-more-button::after, .raise-issue::after {
+    display: none; /* Remove ripple effect on mobile */
+  }
+
+  /* Disable complex animations */
+  @keyframes divider-move {
+    0%, 100% { background-position: 0% center; }
+  }
+}
+
+/* Low-end device optimizations */
+@media (max-width: 480px) {
+  .key-issues-container {
+    grid-template-columns: 1fr; /* Single column on small screens */
+    gap: 12px;
+  }
+
+  .issue-card {
+    min-height: auto;
+  }
+
+  .issue-image {
+    height: 140px;
+  }
+
+  .key-issues-header h2 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Production optimizations for Vercel */
+@media (prefers-reduced-motion: reduce), 
+       (max-width: 768px),
+       (max-resolution: 1dppx) {
+  .issue-card,
+  .learn-more-button,
+  .raise-issue,
+  .nav-arrow {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .section-divider,
+  .key-issues-divider {
+    animation: none !important;
+  }
+  
+  .issue-card:hover {
+    transform: none !important;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important;
+  }
+}
+
+/* Optimize for slow connections */
+@media (max-bandwidth: 1mbps) {
+  .issue-card-image {
+    height: 120px; /* Smaller images */
+  }
+  
+  .key-issues-container {
+    gap: 12px; /* Reduce spacing */
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .issue-card,
+  .learn-more-button,
+  .raise-issue,
+  .nav-arrow {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .section-divider {
+    animation: none !important;
   }
 }
 
