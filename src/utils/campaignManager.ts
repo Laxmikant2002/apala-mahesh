@@ -1,6 +1,5 @@
 // Campaign Management Utility for creating and managing email campaigns
-import { unifiedEmailService, CampaignResult } from './unifiedEmailService';
-import { CampaignData } from './brevoEmailService';
+import { unifiedEmailService, EmailResult } from './unifiedEmailService';
 
 export interface CampaignTemplate {
   id: string;
@@ -250,7 +249,7 @@ export class CampaignManager {
       customSubject?: string;
       customSender?: { name: string; email: string };
     }
-  ): Promise<CampaignResult> {
+  ): Promise<EmailResult> {
     const template = this.templates.get(templateId);
     if (!template) {
       return {
@@ -263,25 +262,19 @@ export class CampaignManager {
       // Replace variables in template
       const processedContent = this.processTemplate(template, variables);
       
-      // Prepare campaign data
-      const campaignData: CampaignData = {
-        name: `${template.name} - ${new Date().toISOString().split('T')[0]}`,
-        subject: options?.customSubject || processedContent.subject,
-        sender: options?.customSender || {
-          name: process.env.REACT_APP_SENDER_NAME || 'Aapla Mahesh Team',
-          email: process.env.REACT_APP_SENDER_EMAIL || 'contact@aaplamahesh.org'
-        },
-        htmlContent: processedContent.htmlContent,
-        textContent: processedContent.textContent,
-        recipients: Array.isArray(recipients) 
-          ? (typeof recipients[0] === 'string' 
-              ? (recipients as string[]).map(email => ({ email }))
-              : recipients as { email: string; name?: string }[])
-          : [],
-        scheduledAt: options?.scheduledAt
-      };
+      // Prepare recipient emails
+      const recipientEmails = Array.isArray(recipients) 
+        ? (typeof recipients[0] === 'string' 
+            ? (recipients as string[])
+            : (recipients as { email: string; name?: string }[]).map(r => r.email))
+        : [];
 
-      return await unifiedEmailService.sendCampaign(campaignData);
+      return await unifiedEmailService.sendNewsletterEmail(
+        recipientEmails,
+        options?.customSubject || processedContent.subject,
+        processedContent.htmlContent,
+        processedContent.textContent
+      );
     } catch (error) {
       return {
         success: false,
@@ -303,7 +296,7 @@ export class CampaignManager {
       actionUrl?: string;
       actionText?: string;
     }
-  ): Promise<CampaignResult> {
+  ): Promise<EmailResult> {
     const urgentBadge = options?.urgent ? '🚨 URGENT: ' : '';
     const callToAction = options?.includeCallToAction && options.actionUrl ? `
       <div style="text-align: center; margin: 30px 0;">
@@ -334,18 +327,11 @@ export class CampaignManager {
       </div>
     `;
 
-    const campaignData: CampaignData = {
-      name: `Quick Announcement - ${new Date().toISOString().split('T')[0]}`,
-      subject: `${urgentBadge}${subject}`,
-      sender: {
-        name: process.env.REACT_APP_SENDER_NAME || 'Aapla Mahesh Team',
-        email: process.env.REACT_APP_SENDER_EMAIL || 'contact@aaplamahesh.org'
-      },
-      htmlContent,
-      recipients: recipients.map(email => ({ email }))
-    };
-
-    return await unifiedEmailService.sendCampaign(campaignData);
+    return await unifiedEmailService.sendNewsletterEmail(
+      recipients,
+      `${urgentBadge}${subject}`,
+      htmlContent
+    );
   }
 
   /**

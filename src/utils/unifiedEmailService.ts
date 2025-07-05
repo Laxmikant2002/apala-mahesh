@@ -1,22 +1,8 @@
-// Unified Email Service that combines Brevo and Nodemailer capabilities
+// Unified email service for browser environment (React)
+// Uses only browser-compatible email services
+
 import { EmailData } from './emailService';
-import { brevoEmailService, CampaignData } from './brevoEmailService';
-import { nodemailerService } from './nodemailerService';
-
-export type EmailProvider = 'brevo' | 'nodemailer' | 'auto';
-
-export interface EmailServiceConfig {
-  provider: EmailProvider;
-  fallbackProvider?: EmailProvider;
-  autoReply?: boolean;
-}
-
-export interface CampaignResult {
-  success: boolean;
-  message: string;
-  campaignId?: number;
-  results?: any[];
-}
+import { brevoEmailService } from './brevoEmailService';
 
 export interface EmailResult {
   success: boolean;
@@ -24,332 +10,239 @@ export interface EmailResult {
   messageId?: string;
 }
 
-export class UnifiedEmailService {
-  private config: EmailServiceConfig;
+export interface ProviderStatus {
+  brevo: {
+    configured: boolean;
+    features: string[];
+  };
+  active: string;
+}
 
-  constructor(config?: Partial<EmailServiceConfig>) {
-    this.config = {
-      provider: 'auto',
-      fallbackProvider: 'nodemailer',
-      autoReply: true,
-      ...config
-    };
-  }
+export class UnifiedEmailService {
+  private brevoService = brevoEmailService;
 
   /**
-   * Send a form submission email using the configured provider
+   * Send an email using the best available provider
    */
   async sendFormEmail(emailData: EmailData): Promise<EmailResult> {
-    let result: EmailResult;
+    // Try Brevo first (if configured)
+    if (this.isBrevoConfigured()) {
+      try {
+        const result = await this.brevoService.sendTransactionalEmail(emailData);
+        return {
+          success: result.success,
+          message: result.message,
+          messageId: result.messageId
+        };
+      } catch (error) {
+        console.warn('Brevo service failed:', error);
+      }
+    }
+
+    // Fallback to a simple HTTP POST to a backend endpoint (if available)
+    try {
+      return await this.sendViaBackend(emailData);
+    } catch (error) {
+      return {
+        success: false,
+        message: 'All email services are unavailable. Please contact us directly.'
+      };
+    }
+  }
+
+  /**
+   * Send email via backend API (for SMTP services)
+   */
+  private async sendViaBackend(emailData: EmailData): Promise<EmailResult> {
+    // This would connect to your backend API that handles SMTP
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || '/api/send-email';
     
     try {
-      // Determine which provider to use
-      const provider = this.getProvider();
-      
-      if (provider === 'brevo') {
-        result = await brevoEmailService.sendTransactionalEmail(emailData);
-      } else {
-        result = await nodemailerService.sendFormSubmissionEmail(emailData);
+      const response = await fetch(backendUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Send auto-reply if enabled and primary email was successful
-      if (result.success && this.config.autoReply) {
-        try {
-          await this.sendAutoReply(emailData);
-        } catch (error) {
-          console.warn('Auto-reply failed:', error);
-          // Don't fail the main email if auto-reply fails
-        }
-      }
-
+      const result = await response.json();
       return result;
     } catch (error) {
-      console.error('Primary email provider failed:', error);
-      
-      // Try fallback provider if available
-      if (this.config.fallbackProvider && this.config.fallbackProvider !== this.config.provider) {
-        try {
-          console.log(`Trying fallback provider: ${this.config.fallbackProvider}`);
-          
-          if (this.config.fallbackProvider === 'brevo') {
-            result = await brevoEmailService.sendTransactionalEmail(emailData);
-          } else {
-            result = await nodemailerService.sendFormSubmissionEmail(emailData);
-          }
-
-          return {
-            ...result,
-            message: `${result.message} (via fallback provider)`
-          };
-        } catch (fallbackError) {
-          console.error('Fallback provider also failed:', fallbackError);
-        }
-      }
-
-      return {
-        success: false,
-        message: 'Failed to send email via all available providers'
-      };
+      throw new Error('Backend email service not available');
     }
   }
 
   /**
-   * Send auto-reply email to the form submitter
+   * Send email via Brevo specifically
    */
-  async sendAutoReply(emailData: EmailData): Promise<EmailResult> {
+  async sendViaBrevo(emailData: EmailData): Promise<EmailResult> {
+    if (!this.isBrevoConfigured()) {
+      return {
+        success: false,
+        message: 'Brevo email service is not configured'
+      };
+    }
+
     try {
-      // Always use Nodemailer for auto-replies as it's more reliable for this purpose
-      return await nodemailerService.sendAutoReply(emailData);
+      const result = await this.brevoService.sendTransactionalEmail(emailData);
+      return {
+        success: result.success,
+        message: result.message,
+        messageId: result.messageId
+      };
     } catch (error) {
-      console.error('Auto-reply failed:', error);
       return {
         success: false,
-        message: 'Failed to send auto-reply email'
+        message: `Brevo service error: ${error instanceof Error ? error.message : 'Unknown error'}`
       };
     }
   }
 
   /**
-   * Create and send an email campaign
+   * Test email setup for all providers
    */
-  async sendCampaign(campaignData: CampaignData): Promise<CampaignResult> {
-    try {
-      // For campaigns, prefer Brevo API
-      if (campaignData.listIds && campaignData.listIds.length > 0) {
-        // Use Brevo's campaign API for large lists
-        const result = await brevoEmailService.createEmailCampaign(campaignData);
-        return {
-          success: result.success,
-          message: result.message,
-          campaignId: result.campaignId
-        };
-      } else if (campaignData.recipients && campaignData.recipients.length > 0) {
-        // For smaller recipient lists, send individual emails
-        if (campaignData.recipients.length <= 50) {
-          // Use Brevo for smaller batches
-          const result = await brevoEmailService.sendCampaignToRecipients(campaignData);
-          return {
-            success: result.success,
-            message: result.message,
-            results: result.results
-          };
-        } else {
-          // Use Nodemailer for bulk sending
-          const recipients = campaignData.recipients.map(r => r.email);
-          const result = await nodemailerService.sendBulkEmails(
-            recipients,
-            campaignData.subject,
-            campaignData.htmlContent,
-            campaignData.textContent
-          );
-          return {
-            success: result.success,
-            message: result.message,
-            results: result.results
-          };
-        }
-      } else {
-        throw new Error('No recipients specified for campaign');
-      }
-    } catch (error) {
-      console.error('Campaign sending failed:', error);
-      return {
-        success: false,
-        message: `Failed to send campaign: ${error instanceof Error ? error.message : 'Unknown error'}`
-      };
-    }
-  }
-
-  /**
-   * Send newsletter to a list of recipients
-   */
-  async sendNewsletter(
-    recipients: string[], 
-    subject: string, 
-    content: { html: string; text?: string }
-  ): Promise<CampaignResult> {
-    try {
-      if (recipients.length <= 100) {
-        // Use Brevo for smaller newsletters
-        const campaignData: CampaignData = {
-          name: `Newsletter: ${subject}`,
-          subject,
-          sender: {
-            name: process.env.REACT_APP_SENDER_NAME || 'Aapla Mahesh Team',
-            email: process.env.REACT_APP_SENDER_EMAIL || 'contact@aaplamahesh.org'
-          },
-          htmlContent: content.html,
-          textContent: content.text,
-          recipients: recipients.map(email => ({ email }))
-        };
-
-        const result = await brevoEmailService.sendCampaignToRecipients(campaignData);
-        return {
-          success: result.success,
-          message: result.message,
-          results: result.results
-        };
-      } else {
-        // Use Nodemailer for larger newsletters
-        const result = await nodemailerService.sendNewsletter(recipients, subject, content);
-        return {
-          success: result.success,
-          message: result.message,
-          results: result.results
-        };
-      }
-    } catch (error) {
-      console.error('Newsletter sending failed:', error);
-      return {
-        success: false,
-        message: `Failed to send newsletter: ${error instanceof Error ? error.message : 'Unknown error'}`
-      };
-    }
-  }
-
-  /**
-   * Test email functionality
-   */
-  async testEmailSetup(): Promise<{ brevo: EmailResult; nodemailer: EmailResult }> {
-    const results = {
-      brevo: { success: false, message: 'Not tested' },
-      nodemailer: { success: false, message: 'Not tested' }
+  async testEmailSetup(): Promise<{
+    brevo: { success: boolean; message: string };
+    backend: { success: boolean; message: string };
+  }> {
+    const testData: EmailData = {
+      name: 'Test User',
+      email: 'test@example.com',
+      subject: 'Email Service Test',
+      message: 'This is a test message to verify email service functionality.',
+      formType: 'contact'
     };
 
     // Test Brevo
+    const brevoTest = this.isBrevoConfigured() 
+      ? await this.testBrevoService(testData)
+      : { success: false, message: 'Brevo not configured' };
+
+    // Test backend
+    const backendTest = await this.testBackendService(testData);
+
+    return {
+      brevo: brevoTest,
+      backend: backendTest
+    };
+  }
+
+  /**
+   * Test Brevo service
+   */
+  private async testBrevoService(testData: EmailData): Promise<{ success: boolean; message: string }> {
     try {
-      results.brevo = await brevoEmailService.testConnection();
+      // Just test if we can create the email content without sending
+      const result = await this.brevoService.sendTransactionalEmail({
+        ...testData,
+        subject: '[TEST] ' + testData.subject
+      });
+      
+      return {
+        success: result.success,
+        message: result.success ? 'Brevo service is working' : result.message
+      };
     } catch (error) {
-      results.brevo = {
+      return {
         success: false,
         message: `Brevo test failed: ${error instanceof Error ? error.message : 'Unknown error'}`
       };
     }
-
-    // Test Nodemailer
-    try {
-      const verifyResult = await nodemailerService.verifyConnection();
-      if (verifyResult.success) {
-        results.nodemailer = await nodemailerService.sendTestEmail();
-      } else {
-        results.nodemailer = verifyResult;
-      }
-    } catch (error) {
-      results.nodemailer = {
-        success: false,
-        message: `Nodemailer test failed: ${error instanceof Error ? error.message : 'Unknown error'}`
-      };
-    }
-
-    return results;
   }
 
   /**
-   * Get campaign statistics (Brevo only)
+   * Test backend service
    */
-  async getCampaignStats(campaignId: number): Promise<{ success: boolean; stats?: any; message: string }> {
+  private async testBackendService(testData: EmailData): Promise<{ success: boolean; message: string }> {
     try {
-      return await brevoEmailService.getCampaignStats(campaignId);
+      const result = await this.sendViaBackend({
+        ...testData,
+        subject: '[TEST] ' + testData.subject
+      });
+      
+      return {
+        success: result.success,
+        message: result.success ? 'Backend service is working' : result.message
+      };
     } catch (error) {
       return {
         success: false,
-        message: `Failed to get campaign stats: ${error instanceof Error ? error.message : 'Unknown error'}`
+        message: 'Backend service not available or not configured'
       };
     }
   }
 
   /**
-   * Create a contact list for future campaigns (Brevo only)
+   * Get provider status
    */
-  async createContactList(listName: string, contacts: { email: string; name?: string }[]): Promise<{ success: boolean; message: string; listId?: number }> {
-    try {
-      return await brevoEmailService.createContactList(listName, contacts);
-    } catch (error) {
-      return {
-        success: false,
-        message: `Failed to create contact list: ${error instanceof Error ? error.message : 'Unknown error'}`
-      };
-    }
-  }
-
-  /**
-   * Update service configuration
-   */
-  updateConfig(newConfig: Partial<EmailServiceConfig>): void {
-    this.config = { ...this.config, ...newConfig };
-  }
-
-  /**
-   * Get current configuration
-   */
-  getConfig(): EmailServiceConfig {
-    return { ...this.config };
-  }
-
-  /**
-   * Determine which provider to use based on configuration
-   */
-  private getProvider(): EmailProvider {
-    if (this.config.provider === 'auto') {
-      // Auto-select based on environment or availability
-      const brevoApiKey = process.env.REACT_APP_BREVO_API_KEY || process.env.BREVO_API_KEY;
-      const gmailUser = process.env.REACT_APP_GMAIL_USER;
-      const smtpHost = process.env.REACT_APP_SMTP_HOST;
-
-      if (brevoApiKey) {
-        return 'brevo';
-      } else if (gmailUser || smtpHost) {
-        return 'nodemailer';
-      } else {
-        console.warn('No email provider configured properly');
-        return 'nodemailer'; // Default fallback
-      }
-    }
-
-    return this.config.provider;
-  }
-
-  /**
-   * Check if a provider is properly configured
-   */
-  isProviderConfigured(provider: EmailProvider): boolean {
-    switch (provider) {
-      case 'brevo':
-        return !!(process.env.REACT_APP_BREVO_API_KEY || process.env.BREVO_API_KEY);
-      
-      case 'nodemailer':
-        return !!(
-          process.env.REACT_APP_GMAIL_USER ||
-          process.env.REACT_APP_SMTP_HOST ||
-          process.env.REACT_APP_BREVO_SMTP_USER
-        );
-      
-      default:
-        return false;
-    }
-  }
-
-  /**
-   * Get provider status and configuration info
-   */
-  getProviderStatus(): { 
-    brevo: { configured: boolean; features: string[] }; 
-    nodemailer: { configured: boolean; features: string[] };
-    active: EmailProvider;
-  } {
+  getProviderStatus(): ProviderStatus {
+    const brevoConfigured = this.isBrevoConfigured();
+    
     return {
       brevo: {
-        configured: this.isProviderConfigured('brevo'),
-        features: ['Transactional emails', 'Bulk campaigns', 'Contact lists', 'Analytics', 'Templates']
+        configured: brevoConfigured,
+        features: brevoConfigured ? ['transactional', 'campaigns', 'templates'] : []
       },
-      nodemailer: {
-        configured: this.isProviderConfigured('nodemailer'),
-        features: ['SMTP emails', 'Bulk sending', 'Auto-replies', 'Multiple providers', 'Custom templates']
-      },
-      active: this.getProvider()
+      active: brevoConfigured ? 'brevo' : 'none'
     };
+  }
+
+  /**
+   * Check if Brevo is configured
+   */
+  private isBrevoConfigured(): boolean {
+    const apiKey = process.env.REACT_APP_BREVO_API_KEY || process.env.BREVO_API_KEY;
+    return !!apiKey && apiKey.length > 0;
+  }
+
+  /**
+   * Send newsletter/campaign email
+   */
+  async sendNewsletterEmail(
+    recipients: string[],
+    subject: string,
+    htmlContent: string,
+    textContent?: string
+  ): Promise<EmailResult> {
+    if (!this.isBrevoConfigured()) {
+      return {
+        success: false,
+        message: 'Newsletter functionality requires Brevo configuration'
+      };
+    }
+
+    try {
+      const campaignData = {
+        name: `Newsletter - ${new Date().toISOString().split('T')[0]}`,
+        subject: subject,
+        sender: {
+          name: process.env.REACT_APP_SENDER_NAME || 'Aapla Mahesh Team',
+          email: process.env.REACT_APP_SENDER_EMAIL || 'contact@aaplamahesh.org'
+        },
+        htmlContent: htmlContent,
+        textContent: textContent,
+        recipients: recipients.map(email => ({ email }))
+      };
+
+      const result = await this.brevoService.createEmailCampaign(campaignData);
+      return {
+        success: result.success,
+        message: result.message,
+        messageId: result.campaignId?.toString()
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Newsletter sending failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      };
+    }
   }
 }
 
-// Create a singleton instance
+// Create singleton instance
 export const unifiedEmailService = new UnifiedEmailService();

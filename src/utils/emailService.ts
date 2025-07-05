@@ -60,9 +60,9 @@ export class EmailService {
     try {
       const status = unifiedEmailService.getProviderStatus();
       return {
-        configured: status.brevo.configured || status.nodemailer.configured,
+        configured: status.brevo.configured,
         activeProvider: status.active,
-        features: status.active === 'brevo' ? status.brevo.features : status.nodemailer.features
+        features: status.brevo.features
       };
     } catch (error) {
       return {
@@ -76,14 +76,14 @@ export class EmailService {
   // Test all email providers
   async testAllProviders(): Promise<{
     brevo: { success: boolean; message: string };
-    nodemailer: { success: boolean; message: string };
+    backend: { success: boolean; message: string };
   }> {
     try {
       return await unifiedEmailService.testEmailSetup();
     } catch (error) {
       return {
         brevo: { success: false, message: 'Test failed' },
-        nodemailer: { success: false, message: 'Test failed' }
+        backend: { success: false, message: 'Test failed' }
       };
     }
   }

@@ -77,7 +77,7 @@ const EmailServiceDemo: React.FC<EmailServiceDemoProps> = ({ className }) => {
         type: 'Email Campaign',
         success: result.success,
         message: result.message,
-        campaignId: result.campaignId,
+        messageId: result.messageId,
         timestamp: new Date().toLocaleString()
       });
     } catch (error) {
@@ -134,7 +134,7 @@ const EmailServiceDemo: React.FC<EmailServiceDemoProps> = ({ className }) => {
       setResults({
         type: 'Provider Test',
         brevo: testResults.brevo,
-        nodemailer: testResults.nodemailer,
+        backend: testResults.backend,
         timestamp: new Date().toLocaleString()
       });
     } catch (error) {
@@ -165,10 +165,6 @@ const EmailServiceDemo: React.FC<EmailServiceDemoProps> = ({ className }) => {
           brevo: {
             configured: providerStatus.brevo.configured,
             features: providerStatus.brevo.features
-          },
-          nodemailer: {
-            configured: providerStatus.nodemailer.configured,
-            features: providerStatus.nodemailer.features
           }
         },
         timestamp: new Date().toLocaleString()
@@ -189,7 +185,7 @@ const EmailServiceDemo: React.FC<EmailServiceDemoProps> = ({ className }) => {
     <div className={`email-service-demo ${className || ''}`} style={{ maxWidth: '800px', margin: '20px auto', fontFamily: 'Arial, sans-serif' }}>
       <div style={{ background: '#2c3e50', color: 'white', padding: '20px', borderRadius: '8px 8px 0 0' }}>
         <h2 style={{ margin: '0 0 10px 0' }}>📧 Email Services Demo</h2>
-        <p style={{ margin: 0, opacity: 0.9 }}>Test Brevo campaigns, Nodemailer, and unified email functionality</p>
+        <p style={{ margin: 0, opacity: 0.9 }}>Test Brevo campaigns, backend services, and unified email functionality</p>
       </div>
 
       {/* Tab Navigation */}
@@ -293,7 +289,7 @@ const EmailServiceDemo: React.FC<EmailServiceDemoProps> = ({ className }) => {
           <div>
             <h3 style={{ color: '#2c3e50', marginTop: 0 }}>🧪 Email Provider Tests</h3>
             <p style={{ color: '#666', marginBottom: '25px' }}>
-              Test the configuration and connectivity of both Brevo and Nodemailer services.
+              Test the configuration and connectivity of both Brevo and backend email services.
             </p>
             <button
               onClick={handleProviderTest}
@@ -372,16 +368,16 @@ const EmailServiceDemo: React.FC<EmailServiceDemoProps> = ({ className }) => {
                   </div>
                 </div>
                 <div>
-                  <strong>Nodemailer:</strong>
+                  <strong>Backend:</strong>
                   <span style={{ 
-                    color: results.nodemailer.success ? '#28a745' : '#dc3545',
+                    color: results.backend.success ? '#28a745' : '#dc3545',
                     marginLeft: '10px',
                     fontWeight: 'bold'
                   }}>
-                    {results.nodemailer.success ? '✅ Working' : '❌ Failed'}
+                    {results.backend.success ? '✅ Working' : '❌ Failed'}
                   </span>
                   <div style={{ fontSize: '14px', color: '#666', marginLeft: '10px' }}>
-                    {results.nodemailer.message}
+                    {results.backend.message}
                   </div>
                 </div>
               </div>
@@ -412,9 +408,6 @@ const EmailServiceDemo: React.FC<EmailServiceDemoProps> = ({ className }) => {
                   <div style={{ display: 'grid', gap: '10px', gridTemplateColumns: '1fr 1fr' }}>
                     <div>
                       <strong>Brevo:</strong> {results.providerDetails.brevo.configured ? '✅' : '❌'}
-                    </div>
-                    <div>
-                      <strong>Nodemailer:</strong> {results.providerDetails.nodemailer.configured ? '✅' : '❌'}
                     </div>
                   </div>
                 </div>
